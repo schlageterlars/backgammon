@@ -9,7 +9,7 @@ import de.htwg.se.backgammon.exception.MoveException
 import de.htwg.se.backgammon.exception.NotYourFieldException
 import de.htwg.se.backgammon.exception.BarIsNotEmptyException
 import de.htwg.se.backgammon.exception.DieNotExistException
-import de.htwg.se.backgammon.validate.ValidateStrategy
+import de.htwg.se.backgammon.core.validate.ValidateStrategy
 import scala.util.Try
 import de.htwg.se.backgammon.model.base.Field
 import de.htwg.se.backgammon.model.base.NoMove

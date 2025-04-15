@@ -1,5 +1,7 @@
 package de.htwg.se.backgammon.model.base
 
+import scala.compiletime.uninitialized
+
 abstract class Setup(val fields: Int, val pieces: Int) {
   def toMap: Map[Int, Int]
   protected def quarter(q: Int) = ((fields / 4) * q)
@@ -38,7 +40,7 @@ class DefaultSetup(fields: Int, pieces: Int) extends Setup(fields, pieces) {
 
 class CustomSetup(fields: Int, pieces: Int) extends Setup(fields, pieces) {
 
-  var fieldsList: Seq[Int] = _
+  var fieldsList: Seq[Int] = uninitialized
 
   def this(list: List[Int]) = {
     this(list.length * 2, list.map(_.abs).sum)

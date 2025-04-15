@@ -18,7 +18,7 @@ case class Parser[T <: Storable](
 )
 
 object Parser {
-  private val parser: Map[String, Parser[_ <: Storable]] = Map()
+  private val parser: Map[String, Parser[? <: Storable]] = Map()
 
   def register[T <: Storable: ClassTag](
       parser: Parser[T]

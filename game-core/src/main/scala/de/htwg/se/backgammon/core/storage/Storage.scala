@@ -9,6 +9,7 @@ import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import scala.reflect.ClassTag
 import scala.util.boundary
+import scala.annotation.experimental
 
 object XmlStorage {
   given Storage = XmlStorage()
@@ -44,7 +45,7 @@ trait Storage {
     }
   }
 
-  def load[O <: Storable](parser: Parser[_ <: Storable], path: String): Try[O]
+  def load[O <: Storable](parser: Parser[? <: Storable], path: String): Try[O]
 
   def fileExtension: String
 
@@ -52,13 +53,13 @@ trait Storage {
 
   def parse[O <: Storable](
       obj: O,
-      parser: Option[Parser[_ <: Storable]]
+      parser: Option[Parser[? <: Storable]]
   ): String = parse(obj)
 }
 
 class XmlStorage extends Storage {
   override def load[O <: Storable](
-      parser: Parser[_ <: Storable],
+      parser: Parser[? <: Storable],
       path: String
   ): Try[O] = {
     Try({
@@ -91,7 +92,7 @@ class JsonStorage extends Storage {
 
   override def parse[O <: Storable](
       obj: O,
-      parser: Option[Parser[_ <: Storable]]
+      parser: Option[Parser[? <: Storable]]
   ): String = {
     val json = parser.map(p => p.toJson(obj)).getOrElse {
       throw new IllegalArgumentException(

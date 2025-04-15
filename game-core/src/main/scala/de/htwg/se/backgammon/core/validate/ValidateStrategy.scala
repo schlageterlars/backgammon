@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.validate
+package de.htwg.se.backgammon.core.validate
 
 import scala.util.Try
 import scala.util.Success

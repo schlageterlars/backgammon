@@ -16,7 +16,7 @@ enum Player {
 
   def other = if (this == White) Black else White
 
-  def isSameAs(other: Player) = this == None || other == None || this == other
+  infix def isSameAs(other: Player) = this == None || other == None || this == other
 
   def isDifferentThan(other: Player) = !(this isSameAs other)
 }

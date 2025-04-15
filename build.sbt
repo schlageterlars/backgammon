@@ -1,7 +1,16 @@
 val scala3Version = "3.3.1"
 
+lazy val gameCore = project
+  .in(file("game-core"))
+  .settings(
+    name := "game-core",
+    scalaVersion := scala3Version
+  )
+
 lazy val root = project
   .in(file("."))
+  .dependsOn(gameCore)
+  .aggregate(gameCore)
   .settings(
     name := "backgammon",
     version := "0.1.0-SNAPSHOT",

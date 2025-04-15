@@ -42,6 +42,9 @@
 /qbin
 
 # sbt's target directories
+game-core/target/
+game-core/project/
+
 /target/
 /project/**/target/
 /test/macro-annot/target/

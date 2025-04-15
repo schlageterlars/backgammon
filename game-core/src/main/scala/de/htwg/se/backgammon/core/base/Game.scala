@@ -5,7 +5,6 @@ import scala.util.Try
 import scala.util.Success
 import java.util.Map.Entry
 import scala.util.Failure
-import org.scalactic.Fail
 import de.htwg.se.backgammon.model.strategy.ValidateBearOffMoveStrategy
 import de.htwg.se.backgammon.model.IGame
 import de.htwg.se.backgammon.model.IField
@@ -17,7 +16,7 @@ import de.htwg.se.backgammon.model.strategy.MoveStrategy
 import scala.xml.Elem
 import play.api.libs.json.JsValue
 import play.api.libs.json.Reads
-import play.api.libs.json.Json
+import play.api.libs.json.Json  
 import play.api.libs.json.Writes
 import de.htwg.se.backgammon.model.storage.Storable
 import scala.xml.Node

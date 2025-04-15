@@ -18,13 +18,13 @@ trait IField {
 
   def isEmpty(): Boolean
 
-  def hasSameOccupierAs(that: IField): Boolean
+  infix def hasSameOccupierAs(that: IField): Boolean
 
-  def hasDifferentOccupierThen(that: IField): Boolean
+  infix def hasDifferentOccupierThen(that: IField): Boolean
 
-  def isOccupiedBy(player: Player): Boolean
+  infix def isOccupiedBy(player: Player): Boolean
 
-  def isNotOccupiedBy(player: Player): Boolean
+  infix def isNotOccupiedBy(player: Player): Boolean
 
   def copy(number: Int): IField
 
