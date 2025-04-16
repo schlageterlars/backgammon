@@ -1,7 +1,7 @@
-package de.htwg.se.backgammon.model
+package de.htwg.se.backgammon.core
 
 import scala.xml.Elem
-import de.htwg.se.backgammon.model.storage.Storable
+import de.htwg.se.backgammon.core.storage.Storable
 import scala.xml.{Elem, Null, TopScope, Text}
 
 

@@ -1,11 +1,11 @@
-package de.htwg.se.backgammon.model
+package de.htwg.se.backgammon.core
 
-import de.htwg.se.backgammon.model.storage.Storable
+import de.htwg.se.backgammon.core.storage.Storable
 import scala.util.Try
 import play.api.libs.json.Reads
 import play.api.libs.json.Json
 import play.api.libs.json.Writes
-import de.htwg.se.backgammon.model.base.Game
+import de.htwg.se.backgammon.core.base.Game
 import play.api.libs.json.JsValue
 import play.api.libs.json.JsResult
 import scala.xml.{Elem, Null, Text, TopScope}

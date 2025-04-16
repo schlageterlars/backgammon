@@ -1,7 +1,7 @@
-package de.htwg.se.backgammon.model.base
+package de.htwg.se.backgammon.core.base
 
-import de.htwg.se.backgammon.model.Player
-import de.htwg.se.backgammon.model.IField
+import de.htwg.se.backgammon.core.Player
+import de.htwg.se.backgammon.core.IField
 
 class Field(val pieces: Int) extends IField {
 

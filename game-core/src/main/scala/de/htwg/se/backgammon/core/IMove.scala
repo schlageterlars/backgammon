@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.model
+package de.htwg.se.backgammon.core
 
 trait IMove {
   def whereToGo(game: IGame): Int

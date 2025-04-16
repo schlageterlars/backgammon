@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.model.storage
+package de.htwg.se.backgammon.core.storage
 
 import scala.xml.Elem
 

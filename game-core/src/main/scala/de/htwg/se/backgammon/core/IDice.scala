@@ -1,7 +1,7 @@
-package de.htwg.se.backgammon.model
+package de.htwg.se.backgammon.core
 
 import play.api.libs.json.Reads
-import de.htwg.se.backgammon.model.base.Dice
+import de.htwg.se.backgammon.core.base.Dice
 import play.api.libs.json.Json
 import play.api.libs.json.Writes
 import play.api.libs.json.JsValue

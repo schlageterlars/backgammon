@@ -1,13 +1,13 @@
-package de.htwg.se.backgammon.model.strategy
+package de.htwg.se.backgammon.core.strategy
 
-import de.htwg.se.backgammon.model.IGame
-import de.htwg.se.backgammon.model.IMove
-import de.htwg.se.backgammon.model.IField
-import de.htwg.se.backgammon.model.Player
-import de.htwg.se.backgammon.model.base.Game
-import de.htwg.se.backgammon.model.base.Move
-import de.htwg.se.backgammon.model.base.BearInMove
-import de.htwg.se.backgammon.model.base.BearOffMove
+import de.htwg.se.backgammon.core.IGame
+import de.htwg.se.backgammon.core.IMove
+import de.htwg.se.backgammon.core.IField
+import de.htwg.se.backgammon.core.Player
+import de.htwg.se.backgammon.core.base.Game
+import de.htwg.se.backgammon.core.base.Move
+import de.htwg.se.backgammon.core.base.BearInMove
+import de.htwg.se.backgammon.core.base.BearOffMove
 
 object MoveStrategy {
   def apply(game: IGame, move: IMove, to: Int): IMoveStrategy = move match {

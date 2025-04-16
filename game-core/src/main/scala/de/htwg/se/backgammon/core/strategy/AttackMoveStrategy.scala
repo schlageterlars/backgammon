@@ -1,8 +1,8 @@
-package de.htwg.se.backgammon.model.strategy
+package de.htwg.se.backgammon.core.strategy
 
-import de.htwg.se.backgammon.model.IGame
-import de.htwg.se.backgammon.model.Player
-import de.htwg.se.backgammon.model.base.Field
+import de.htwg.se.backgammon.core.IGame
+import de.htwg.se.backgammon.core.Player
+import de.htwg.se.backgammon.core.base.Field
 
 trait AttackMoveStrategy(game: IGame, attacker: Player, to: Int)
     extends MoveCheckersStrategy {

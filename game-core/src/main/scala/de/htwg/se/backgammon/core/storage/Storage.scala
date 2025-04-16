@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.model.storage
+package de.htwg.se.backgammon.core.storage
 
 import java.io.PrintWriter
 import scala.util.Using
@@ -9,7 +9,8 @@ import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import scala.reflect.ClassTag
 import scala.util.boundary
-import scala.annotation.experimental
+import scala.util.Success
+import scala.util.Failure
 
 object XmlStorage {
   given Storage = XmlStorage()
@@ -36,12 +37,17 @@ trait Storage {
     )
   }
 
-  def load[O <: Storable: ClassTag](path: String): Try[O] = {
+  def load[O <: Storable: ClassTag](path: Option[String]): Try[O] = {
     val className = implicitly[ClassTag[O]].runtimeClass.getSimpleName
-    Parser.get(className) match {
-      case Some(parser: Parser[_ <: Storable]) => load(parser, path)
-      case _ =>
-        throw new IllegalArgumentException(s"Unsupported type: ${className}")
+
+    path match {
+        case None => Failure(new IllegalArgumentException("Path must be defined"))
+        case Some(path) =>
+        Parser.get(className) match {
+            case Some(parser: Parser[_ <: Storable]) => load(parser, path)
+            case None => 
+                Failure(new IllegalArgumentException(s"Unsupported type: $className"))
+        }
     }
   }
 

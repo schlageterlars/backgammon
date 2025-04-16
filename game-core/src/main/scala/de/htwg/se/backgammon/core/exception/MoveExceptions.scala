@@ -1,6 +1,6 @@
 package de.htwg.se.backgammon.exception
 
-import de.htwg.se.backgammon.model.Player
+import de.htwg.se.backgammon.core.Player
 
 class MoveException extends Exception {
   override def getMessage() = "Unknown error has occurred."

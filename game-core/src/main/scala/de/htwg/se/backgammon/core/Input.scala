@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.model
+package de.htwg.se.backgammon.core
 
 object Input {
   val Quit: Option[Quit] = Some(new Quit())

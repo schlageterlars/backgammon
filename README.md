@@ -11,8 +11,8 @@ This is an open-source project that implements the classic board game Backgammon
 
 This project supports data storage in both JSON and XML formats. You can save and load your game data using the provided serialization functionalities. Simply import the corresponding class into the `de.htwg.se.backgammon.Main` class.
 
-* JSON: `import de.htwg.se.backgammon.model.storage.JsonStorage.{given}`
-* XML: `import de.htwg.se.backgammon.model.storage.XmlStorage.{given}`   
+* JSON: `import de.htwg.se.backgammon.core.storage.JsonStorage.{given}`
+* XML: `import de.htwg.se.backgammon.core.storage.XmlStorage.{given}`   
 
 By implementing the following `Storage` trait,
 you gain the flexibility to effortlessly support various serialization formats.

@@ -1,7 +1,7 @@
-package de.htwg.se.backgammon.model.base
+package de.htwg.se.backgammon.core.base
 
 import scala.util.Random
-import de.htwg.se.backgammon.model.IDice
+import de.htwg.se.backgammon.core.IDice
 
 class Dice extends IDice {
   def roll: Int = Random.nextInt(6) + 1

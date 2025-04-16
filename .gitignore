@@ -42,8 +42,16 @@
 /qbin
 
 # sbt's target directories
+game/target
+
 game-core/target/
 game-core/project/
+
+game-ui/target/
+
+game-engine/target/
+
+src/target
 
 /target/
 /project/**/target/

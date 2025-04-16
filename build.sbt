@@ -1,26 +1,59 @@
-val scala3Version = "3.3.1"
+ThisBuild / organization := "de.htwg.se.backgammon"
+ThisBuild / version := "0.1.0-SNAPSHOT"
+ThisBuild / scalaVersion := "3.5.0"
+
+lazy val root = project
+  .in(file("."))
+  .aggregate(game)
+  .dependsOn(game)
+  .settings(
+    name := "backgammon",
+    Compile / unmanagedResourceDirectories += baseDirectory.value / "src" / "main" / "resources",
+    libraryDependencies ++= Seq(
+      "org.scalameta" %% "munit" % "0.7.29" % Test,
+      "org.scalactic" %% "scalactic" % "3.2.14",
+      "org.scalatest" %% "scalatest" % "3.2.14" % Test,
+      "org.scalafx" %% "scalafx" % "21.0.0-R32"
+    )
+  )
+
+lazy val game = project
+  .in(file("game"))
+  .dependsOn(gameCore, gameEngine, gameUi)
+  .settings(
+    name := "game",
+    libraryDependencies ++= Seq(
+      "org.scalameta" %% "munit" % "0.7.29" % Test,
+      "org.scalactic" %% "scalactic" % "3.2.14",
+      "org.scalatest" %% "scalatest" % "3.2.14" % Test,
+      "org.scalafx" %% "scalafx" % "21.0.0-R32"
+    )
+  )
 
 lazy val gameCore = project
   .in(file("game-core"))
   .settings(
     name := "game-core",
-    scalaVersion := scala3Version
+    libraryDependencies ++= Seq(
+      "org.scala-lang.modules" %% "scala-xml" % "2.2.0",
+      "com.typesafe.play" %% "play-json" % "2.10.3"
+    )
   )
 
-lazy val root = project
-  .in(file("."))
+lazy val gameEngine = project
+  .in(file("game-engine"))
   .dependsOn(gameCore)
-  .aggregate(gameCore)
   .settings(
-    name := "backgammon",
-    version := "0.1.0-SNAPSHOT",
-    scalaVersion := scala3Version,
-    unmanagedResourceDirectories in Compile += baseDirectory.value / "src" / "main" / "resources",
-    libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test,
-    libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.14",
-    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.14" % "test",
-    libraryDependencies += "org.scalafx" %% "scalafx" % "21.0.0-R32",
-    libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.2.0",
-    libraryDependencies += "com.typesafe.play" %% "play-json" % "2.10.3",
-    coverageExcludedPackages := "<empty>;*view*;*PrettyPrint.scala"
+    name := "game-engine"
+  )
+
+lazy val gameUi = project
+  .in(file("game-ui"))
+  .dependsOn(gameCore)
+  .dependsOn(gameEngine)
+  .settings(
+    name := "game-ui",
+    libraryDependencies ++= Seq(
+      "org.scalafx" %% "scalafx" % "21.0.0-R32"
+    )
   )

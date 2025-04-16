@@ -1,14 +1,14 @@
-package de.htwg.se.backgammon.model.storage
+package de.htwg.se.backgammon.core.storage
 
 import scala.collection.mutable.Map
 import scala.xml.Elem
-import de.htwg.se.backgammon.model.base.Game
+import de.htwg.se.backgammon.core.base.Game
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import scala.reflect.ClassTag
-import de.htwg.se.backgammon.model.IGame
-import de.htwg.se.backgammon.model.IModel
-import de.htwg.se.backgammon.model.base.Model
+import de.htwg.se.backgammon.core.IGame
+import de.htwg.se.backgammon.core.IModel
+import de.htwg.se.backgammon.core.base.Model
 import scala.xml.Node
 
 case class Parser[T <: Storable](

@@ -1,9 +1,9 @@
-package de.htwg.se.backgammon.model.base
+package de.htwg.se.backgammon.core.base
 
-import de.htwg.se.backgammon.model.Player
-import de.htwg.se.backgammon.model.IMove
-import de.htwg.se.backgammon.model.IGame
-import de.htwg.se.backgammon.model.Input
+import de.htwg.se.backgammon.core.Player
+import de.htwg.se.backgammon.core.IMove
+import de.htwg.se.backgammon.core.IGame
+import de.htwg.se.backgammon.core.Input
 
 private val BAR_POSITION = 999
 

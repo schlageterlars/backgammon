@@ -1,9 +1,9 @@
-package de.htwg.se.backgammon.model.base
+package de.htwg.se.backgammon.core.base
 
-import de.htwg.se.backgammon.model.Player
-import de.htwg.se.backgammon.model.IModel
-import de.htwg.se.backgammon.model.IGame
-import de.htwg.se.backgammon.model.IDice
+import de.htwg.se.backgammon.core.Player
+import de.htwg.se.backgammon.core.IModel
+import de.htwg.se.backgammon.core.IGame
+import de.htwg.se.backgammon.core.IDice
 import scala.xml.Elem
 import play.api.libs.json.Reads
 import play.api.libs.json.Writes

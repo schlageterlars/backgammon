@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.model.base
+package de.htwg.se.backgammon.core.base
 
 import scala.compiletime.uninitialized
 

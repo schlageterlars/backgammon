@@ -1,7 +1,7 @@
-package de.htwg.se.backgammon.model.strategy
+package de.htwg.se.backgammon.core.strategy
 
-import de.htwg.se.backgammon.model.IGame
-import de.htwg.se.backgammon.model.Player
+import de.htwg.se.backgammon.core.IGame
+import de.htwg.se.backgammon.core.Player
 
 abstract class BearInMoveStrategy(game: IGame, player: Player, to: Int)
     extends MoveCheckersStrategy(game) {

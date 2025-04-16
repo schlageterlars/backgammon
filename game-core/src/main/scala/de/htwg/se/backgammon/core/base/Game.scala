@@ -1,24 +1,24 @@
-package de.htwg.se.backgammon.model.base
+package de.htwg.se.backgammon.core.base
 
 import scala.util.Random
 import scala.util.Try
 import scala.util.Success
 import java.util.Map.Entry
 import scala.util.Failure
-import de.htwg.se.backgammon.model.strategy.ValidateBearOffMoveStrategy
-import de.htwg.se.backgammon.model.IGame
-import de.htwg.se.backgammon.model.IField
-import de.htwg.se.backgammon.model.IMove
-import de.htwg.se.backgammon.model.Player
-import de.htwg.se.backgammon.model.strategy.ValidateBearInMoveStrategy
-import de.htwg.se.backgammon.model.strategy.DefaultValidateMoveStrategy
-import de.htwg.se.backgammon.model.strategy.MoveStrategy
+import de.htwg.se.backgammon.core.strategy.ValidateBearOffMoveStrategy
+import de.htwg.se.backgammon.core.IGame
+import de.htwg.se.backgammon.core.IField
+import de.htwg.se.backgammon.core.IMove
+import de.htwg.se.backgammon.core.Player
+import de.htwg.se.backgammon.core.strategy.ValidateBearInMoveStrategy
+import de.htwg.se.backgammon.core.strategy.DefaultValidateMoveStrategy
+import de.htwg.se.backgammon.core.strategy.MoveStrategy
 import scala.xml.Elem
 import play.api.libs.json.JsValue
 import play.api.libs.json.Reads
 import play.api.libs.json.Json  
 import play.api.libs.json.Writes
-import de.htwg.se.backgammon.model.storage.Storable
+import de.htwg.se.backgammon.core.storage.Storable
 import scala.xml.Node
 
 case class Game(fields: List[IField], barWhite: Int = 0, barBlack: Int = 0)

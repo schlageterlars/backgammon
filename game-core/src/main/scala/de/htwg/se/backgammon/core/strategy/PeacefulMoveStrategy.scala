@@ -1,9 +1,9 @@
-package de.htwg.se.backgammon.model.strategy
+package de.htwg.se.backgammon.core.strategy
 
-import de.htwg.se.backgammon.model.IGame
-import de.htwg.se.backgammon.model.IField
-import de.htwg.se.backgammon.model.base.Field
-import de.htwg.se.backgammon.model.Player
+import de.htwg.se.backgammon.core.IGame
+import de.htwg.se.backgammon.core.IField
+import de.htwg.se.backgammon.core.base.Field
+import de.htwg.se.backgammon.core.Player
 
 trait PeacefulMoveStrategy(game: IGame, occupier: Player, to: Int)
     extends MoveCheckersStrategy {

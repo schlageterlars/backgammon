@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.model
+package de.htwg.se.backgammon.core
 
 import play.api.libs.json.Json
 import play.api.libs.json.Reads
