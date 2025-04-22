@@ -2,6 +2,11 @@ ThisBuild / organization := "de.htwg.se.backgammon"
 ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / scalaVersion := "3.5.0"
 
+val akkaVersion            = "2.8.5"
+val akkaHttpVersion        = "10.5.3"
+val playJsonVersion        = "2.10.3"
+val playJsonSupportVersion = "1.39.2"
+
 lazy val root = project
   .in(file("."))
   .aggregate(game)
@@ -33,10 +38,9 @@ lazy val game = project
 lazy val gameCore = project
   .in(file("game-core"))
   .settings(
-    name := "game-core",
     libraryDependencies ++= Seq(
       "org.scala-lang.modules" %% "scala-xml" % "2.2.0",
-      "com.typesafe.play" %% "play-json" % "2.10.3"
+      "com.typesafe.play"      %% "play-json"   % playJsonVersion
     )
   )
 
@@ -44,7 +48,11 @@ lazy val gameEngine = project
   .in(file("game-engine"))
   .dependsOn(gameCore)
   .settings(
-    name := "game-engine"
+    libraryDependencies ++= Seq(
+      "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
+      "com.typesafe.akka" %% "akka-stream"      % akkaVersion,
+      "com.typesafe.akka" %% "akka-http"        % akkaHttpVersion
+    )
   )
 
 lazy val gameUi = project

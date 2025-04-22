@@ -29,8 +29,13 @@ import de.htwg.se.backgammon.controller.PutCommand
 import de.htwg.se.backgammon.core.base.BearInMove
 import de.htwg.se.backgammon.core.base.Move
 import scala.util.boundary
+import de.htwg.se.backgammon.util.Observer
+import de.htwg.se.backgammon.core.base.Model
+import de.htwg.se.backgammon.core.storage.Storage
+import de.htwg.se.backgammon.core.base.Game
+import de.htwg.se.backgammon.core.storage.JsonStorage
 
-case class Controller(private val model: IModel) extends IController {
+case class Controller(private var model: IModel) extends IController {
   def game = model.game
   def previousGame = model.previousGame
   def currentPlayer = model.player
@@ -53,6 +58,26 @@ case class Controller(private val model: IModel) extends IController {
       case _ => notifyObservers(Event.InvalidMove, Some(NoMoveException()))
     }
 
+  def load: Try[IModel] = {
+    val storage = JsonStorage()
+    def changed(e: Event): Boolean = e match {
+        case Event.Move | Event.DiceRolled | Event.PlayerChanged => true
+        case _                                                   => false
+    }
+
+    storage.load[IModel](Some("data")) match {
+        case Success(obj: IModel) =>
+        add(new Observer {
+            override def update(e: Event, exception: Option[Throwable]): Unit =
+            if (changed(e)) storage.save(data, "data")
+        })
+        model = obj
+        Success(obj)
+        case failure =>
+        failure
+    }   
+  }
+
   def undoAndPublish(doThis: => Option[GameState]): Unit = {
     val (game, move) = doThis match {
       case None                        => return
@@ -66,6 +91,13 @@ case class Controller(private val model: IModel) extends IController {
     }
 
     this.game = game
+  }
+
+  def init(game: Game) = {
+    model = new Model(
+          game,
+          new Dice()
+        )
   }
 
   def handle(game: IGame, steps: Int) = {
@@ -143,6 +175,5 @@ case class Controller(private val model: IModel) extends IController {
 
     movePossible
   }
-
   def data = model
 }
