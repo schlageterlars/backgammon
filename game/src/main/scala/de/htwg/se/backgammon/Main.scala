@@ -10,14 +10,15 @@ import de.htwg.se.backgammon.util.Observer
 import de.htwg.se.backgammon.util.Event
 import scala.util.Success
 import scala.util.Failure
-import de.htwg.se.backgammon.core.storage.Storage
 import de.htwg.se.backgammon.core.IModel
 import de.htwg.se.backgammon.core.base.Model
 import de.htwg.se.backgammon.core.base.Game
 import de.htwg.se.backgammon.core.base.Dice
 import de.htwg.se.backgammon.core.base.DefaultSetup
 
-import de.htwg.se.backgammon.core.storage.XmlStorage.given_Storage
+import de.htwg.se.backgammon.storage.Storage
+
+import de.htwg.se.backgammon.storage.JsonStorage.given_Storage
 
 
 private val NUMBER_OF_FIELDS = 24

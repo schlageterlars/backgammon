@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.core.storage
+package de.htwg.se.backgammon.storage
 
 import scala.collection.mutable.Map
 import scala.xml.Elem
@@ -10,6 +10,7 @@ import de.htwg.se.backgammon.core.IGame
 import de.htwg.se.backgammon.core.IModel
 import de.htwg.se.backgammon.core.base.Model
 import scala.xml.Node
+import de.htwg.se.backgammon.core.storage.Storable
 
 case class Parser[T <: Storable](
     fromXml: Node => T = ???,

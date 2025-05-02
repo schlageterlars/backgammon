@@ -4,6 +4,9 @@ import de.htwg.se.backgammon.core.Player
 import de.htwg.se.backgammon.core.IMove
 import de.htwg.se.backgammon.core.IGame
 import de.htwg.se.backgammon.core.Input
+import play.api.libs.json.Reads
+import play.api.libs.json.Json
+import play.api.libs.json.Writes
 
 private val BAR_POSITION = 999
 
@@ -19,6 +22,9 @@ object Move {
       DefinedMove(player, from, to)
     }
   }
+
+  implicit val moveReads: Reads[Move] = Json.reads[Move]
+  implicit val moveWrites: Writes[Move] = Json.writes[Move]
 }
 
 case class Move(from: Int, steps: Int) extends Input with IMove {

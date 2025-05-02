@@ -24,7 +24,7 @@ lazy val root = project
 
 lazy val game = project
   .in(file("game"))
-  .dependsOn(gameCore, gameEngine, gameUi)
+  .dependsOn(gameCore, gameEngine, gameUi, gameStorage)
   .settings(
     name := "game",
     libraryDependencies ++= Seq(
@@ -39,8 +39,11 @@ lazy val gameCore = project
   .in(file("game-core"))
   .settings(
     libraryDependencies ++= Seq(
-      "org.scala-lang.modules" %% "scala-xml" % "2.2.0",
-      "com.typesafe.play"      %% "play-json"   % playJsonVersion
+      "org.scala-lang.modules" %% "scala-xml"           % "2.2.0",
+      "com.typesafe.play"      %% "play-json"           % playJsonVersion,
+      "com.typesafe.akka"      %% "akka-actor-typed"    % akkaVersion,
+      "com.typesafe.akka"      %% "akka-stream"         % akkaVersion,
+      "com.typesafe.akka"      %% "akka-http"           % akkaHttpVersion,
     )
   )
 
@@ -51,7 +54,9 @@ lazy val gameEngine = project
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
       "com.typesafe.akka" %% "akka-stream"      % akkaVersion,
-      "com.typesafe.akka" %% "akka-http"        % akkaHttpVersion
+      "com.typesafe.akka" %% "akka-http"        % akkaHttpVersion,
+      "com.typesafe.akka" %% "akka-discovery"   % "2.8.0"
+
     )
   )
 
@@ -65,3 +70,17 @@ lazy val gameUi = project
       "org.scalafx" %% "scalafx" % "21.0.0-R32"
     )
   )
+
+lazy val gameStorage = project
+  .in(file("game-storage"))
+  .dependsOn(gameCore)
+  .settings(
+    name := "game-storage",
+    libraryDependencies ++= Seq(
+      "com.typesafe.play" %% "play-json"        %   playJsonVersion,
+      "com.typesafe.akka" %% "akka-actor-typed" %   akkaVersion,
+      "com.typesafe.akka" %% "akka-stream"      %   akkaVersion,
+      "com.typesafe.akka" %% "akka-http"        %   akkaHttpVersion
+    )
+  )
+

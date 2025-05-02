@@ -31,9 +31,7 @@ import de.htwg.se.backgammon.core.base.Move
 import scala.util.boundary
 import de.htwg.se.backgammon.util.Observer
 import de.htwg.se.backgammon.core.base.Model
-import de.htwg.se.backgammon.core.storage.Storage
 import de.htwg.se.backgammon.core.base.Game
-import de.htwg.se.backgammon.core.storage.JsonStorage
 
 case class Controller(private var model: IModel) extends IController {
   def game = model.game
@@ -59,7 +57,7 @@ case class Controller(private var model: IModel) extends IController {
     }
 
   def load: Try[IModel] = {
-    val storage = JsonStorage()
+    /*val storage = JsonStorage()
     def changed(e: Event): Boolean = e match {
         case Event.Move | Event.DiceRolled | Event.PlayerChanged => true
         case _                                                   => false
@@ -75,7 +73,8 @@ case class Controller(private var model: IModel) extends IController {
         Success(obj)
         case failure =>
         failure
-    }   
+    }   */
+    return Failure(throw IllegalAccessError())
   }
 
   def undoAndPublish(doThis: => Option[GameState]): Unit = {

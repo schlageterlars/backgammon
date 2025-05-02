@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.core.storage
+package de.htwg.se.backgammon.storage
 
 import java.io.PrintWriter
 import scala.util.Using
@@ -11,6 +11,7 @@ import scala.reflect.ClassTag
 import scala.util.boundary
 import scala.util.Success
 import scala.util.Failure
+import de.htwg.se.backgammon.core.storage.Storable
 
 object XmlStorage {
   given Storage = XmlStorage()

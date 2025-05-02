@@ -25,7 +25,7 @@ Marshaller.withFixedContentType(ContentTypes.`application/json`) { obj =>
 class Routes(val controller: IController):
   private val logger = LoggerFactory.getLogger(getClass.getName.init)
 
-  def routes: Route = handleExceptions(exceptionHandler) {
+  def routes: Route = {
     concat(
       handlePreConnectRequest,
       handleGameDataRequests,
@@ -46,16 +46,16 @@ class Routes(val controller: IController):
     pathPrefix("get") {
       path("game") { 
         complete(controller.game)
-      } ~
+      } 
       path("currentPlayer") { 
         complete(controller.currentPlayer)
-      } ~
+      } 
       path("checkersInBar") { 
         complete(controller.checkersInBar)
-      } ~
+      } 
       path("dice") { 
         complete(controller.dice)
-      } ~
+      } 
       path("gameEnded") { 
         complete(controller.game.winner.isDefined)
       }
@@ -109,17 +109,12 @@ class Routes(val controller: IController):
         }
 
         (numberOfFieldsValidation, numberOfFiguresValidation) match {
-        case (Some(numberOfFields: Int), Some(numberOfFigures: Int)) =>
+        case (numberOfFields: Int, numberOfFigures: Int) =>
             val setup = DefaultSetup(numberOfFields, numberOfFigures)
             controller.init(Game(Game.create(setup)))
             complete(StatusCodes.OK)
-        case (None, _) =>
-            // numberOfFields is invalid
-            complete(StatusCodes.BadRequest, "Invalid board size.")
-
-        case (_, None) =>
-            // numberOfFigures is invalid
-            complete(StatusCodes.BadRequest, "Invalid number of pieces.")
+        case (None, _) =>   complete(StatusCodes.BadRequest, "Invalid board size.")
+        case (_, None) =>   complete(StatusCodes.BadRequest, "Invalid number of pieces.")
         }
       }
     }
@@ -147,11 +142,4 @@ class Routes(val controller: IController):
         complete(StatusCodes.OK)
       }
     }
-  }
-
-  private val exceptionHandler = ExceptionHandler {
-    case e: IllegalArgumentException =>
-      complete(Conflict -> e.getMessage)
-    case e: Throwable =>
-      complete(InternalServerError -> e.getMessage)
   }

@@ -48,8 +48,9 @@ game-core/target/
 game-core/project/
 
 game-ui/target/
-
 game-engine/target/
+game-storage/target/
+
 
 src/target
 
