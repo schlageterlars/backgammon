@@ -1,6 +1,5 @@
-package de.htwg.se.backgammon.controller
+package de.htwg.se.backgammon.core
 
-import de.htwg.se.backgammon.util.Observable
 import de.htwg.se.backgammon.core.GameState
 import de.htwg.se.backgammon.core.Player
 import de.htwg.se.backgammon.core.IGame
@@ -26,7 +25,6 @@ trait IController extends Observable {
   def redo(move: IMove): Try[IGame]
   def undo: Option[GameState]
   def quit: Unit
-  def load: Try[IModel] 
   def init(game: Game): Unit
 
   def existsPossibleMoves: Boolean

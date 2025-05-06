@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.view.component
+package de.htwg.se.backgammon.ui.component
 
 import scalafx.scene.Group
 import scalafx.scene.shape.Rectangle
@@ -6,7 +6,7 @@ import scalafx.scene.paint.Color
 import scalafx.scene.text.Text
 import scalafx.scene.text.Font
 import de.htwg.se.backgammon.core.Player
-import de.htwg.se.backgammon.view.component.configuration.PlayerConfiguration
+import de.htwg.se.backgammon.ui.component.configuration.PlayerConfiguration
 
 val MARGIN_TOP = 25
 val PLAYER_BOX_WIDTH = 50

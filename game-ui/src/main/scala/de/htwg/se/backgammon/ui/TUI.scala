@@ -1,12 +1,9 @@
-package de.htwg.se.backgammon.view
+package de.htwg.se.backgammon.ui
 
 import scala.util.Try
-import de.htwg.se.backgammon.controller.IController
 import de.htwg.se.backgammon.exception.MoveException
 import de.htwg.se.backgammon.core.base.Move
 import de.htwg.se.backgammon.core.base.BearInMove
-import de.htwg.se.backgammon.util.Event
-import de.htwg.se.backgammon.util.Observer
 import de.htwg.se.backgammon.util.PrettyPrint.MarkDifferencesBetweenGames
 import de.htwg.se.backgammon.util.PrettyPrint.PrintDiceResults
 import de.htwg.se.backgammon.util.PrettyPrint.PrintBold
@@ -19,6 +16,9 @@ import de.htwg.se.backgammon.core.Redo
 import de.htwg.se.backgammon.core.base.BearOffMove
 import de.htwg.se.backgammon.core.Skip
 import de.htwg.se.backgammon.util.PrettyPrint.printGameOver
+import de.htwg.se.backgammon.core.IController
+import de.htwg.se.backgammon.core.Observer
+import de.htwg.se.backgammon.core.Event
 
 class TUI(controller: IController) extends Observer:
   controller.add(this)

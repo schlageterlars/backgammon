@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.view.component
+package de.htwg.se.backgammon.ui.component
 
 import scalafx.scene.layout.Pane
 import de.htwg.se.backgammon.core.Player
@@ -10,8 +10,8 @@ import javafx.scene.input.MouseEvent
 import scalafx.Includes.jfxMouseEvent2sfx
 import scalafx.scene.Group
 import scala.collection.mutable.ListBuffer
-import de.htwg.se.backgammon.view.GUI
-import de.htwg.se.backgammon.view.component.configuration.ColorPalette
+import de.htwg.se.backgammon.ui.GUI
+import de.htwg.se.backgammon.ui.component.configuration.ColorPalette
 
 val CHECKER_RADIUS = 17
 

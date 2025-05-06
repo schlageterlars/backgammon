@@ -15,7 +15,7 @@ import de.htwg.se.backgammon.core.base.Field
 import de.htwg.se.backgammon.core.base.NoMove
 import de.htwg.se.backgammon.core.base.BearInMove
 import de.htwg.se.backgammon.exception.NoMoveException
-import de.htwg.se.backgammon.controller.IController
+import de.htwg.se.backgammon.core.IController
 
 trait ValidateMoveStrategy(
     val game: IGame,

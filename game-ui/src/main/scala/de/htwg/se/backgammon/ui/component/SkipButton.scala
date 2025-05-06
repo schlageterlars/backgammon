@@ -1,8 +1,8 @@
-package de.htwg.se.backgammon.view.component
+package de.htwg.se.backgammon.ui.component
 
 import scalafx.scene.control.Button
-import de.htwg.se.backgammon.view.component.configuration.FrameConfiguration
-import de.htwg.se.backgammon.view.component.configuration.ColorPalette
+import de.htwg.se.backgammon.ui.component.configuration.FrameConfiguration
+import de.htwg.se.backgammon.ui.component.configuration.ColorPalette
 
 class SkipButton(using conf: FrameConfiguration) extends Button {
   prefWidth = 100

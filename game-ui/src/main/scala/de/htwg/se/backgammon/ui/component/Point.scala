@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.view.component
+package de.htwg.se.backgammon.ui.component
 
 import scalafx.scene.canvas.GraphicsContext
 import javafx.scene.paint.Color
@@ -13,7 +13,7 @@ import scalafx.scene.layout.Pane
 import scalafx.Includes.eventClosureWrapperWithParam
 import javafx.scene.input.MouseEvent
 import scalafx.scene.Group
-import de.htwg.se.backgammon.view.component.configuration.ColorPalette
+import de.htwg.se.backgammon.ui.component.configuration.ColorPalette
 
 val MARGIN_BOTTOM = 5
 val PADDING = 2

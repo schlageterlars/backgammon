@@ -1,10 +1,10 @@
-package de.htwg.se.backgammon.view.component.util
+package de.htwg.se.backgammon.ui.component.util
 
-import de.htwg.se.backgammon.view.component.Checker
+import de.htwg.se.backgammon.ui.component.Checker
 import de.htwg.se.backgammon.core.Player
 import javafx.scene.input.MouseEvent
 import scalafx.scene.input.KeyCode.Play
-import de.htwg.se.backgammon.view.component.configuration.PrimaryColorPalette
+import de.htwg.se.backgammon.ui.component.configuration.PrimaryColorPalette
 
 case class DraggedChecker(var original: Checker)
     extends Checker(

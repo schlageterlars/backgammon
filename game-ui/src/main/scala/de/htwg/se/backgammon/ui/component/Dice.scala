@@ -1,8 +1,8 @@
-package de.htwg.se.backgammon.view.component
+package de.htwg.se.backgammon.ui.component
 
 import scalafx.scene.Group
 import scala.util.Random
-import de.htwg.se.backgammon.view.component.configuration.BoardConfiguration
+import de.htwg.se.backgammon.ui.component.configuration.BoardConfiguration
 
 class Dice extends GUIList[Die] {
   def create(dice: Int)(using

@@ -9,6 +9,7 @@ import de.htwg.se.backgammon.core.base.Game
 import play.api.libs.json.JsValue
 import play.api.libs.json.JsResult
 import scala.xml.{Elem, Null, Text, TopScope}
+import de.htwg.se.backgammon.core.base.DefaultSetup
 
 
 trait IGame extends IndexedSeq[IField] with Storable {
@@ -86,4 +87,6 @@ object IGame {
   implicit val gameReads: Reads[IGame] = Game.gameReads.map(identity[IGame])
   implicit val gameWrites: Writes[IGame] = (game: IGame) =>
     Game.gameWrites.writes(game.asInstanceOf[Game])
+
+  def default = new Game(DefaultSetup(24, 15))
 }

@@ -55,9 +55,14 @@ case class Model(
 }
 
 object Model {
-
   implicit val modelReads: Reads[Model] = Json.reads[Model]
   implicit val modelWrites: Writes[Model] = Json.writes[Model]
+
+  val default: Model = new Model(
+    new Game(DefaultSetup(24, 15)),
+    new Dice()
+  )
+
   def fromJson(json: JsValue) = {
     json.asOpt[Model] match
       case Some(model: Model) => model

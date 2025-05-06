@@ -1,8 +1,8 @@
-package de.htwg.se.backgammon.view.component.util
+package de.htwg.se.backgammon.ui.component.util
 
 import scalafx.scene.canvas.GraphicsContext
 import scalafx.scene.paint.Color
-import de.htwg.se.backgammon.view.component.configuration.FrameConfiguration
+import de.htwg.se.backgammon.ui.component.configuration.FrameConfiguration
 import scalafx.scene.canvas.Canvas
 import javafx.animation.AnimationTimer
 

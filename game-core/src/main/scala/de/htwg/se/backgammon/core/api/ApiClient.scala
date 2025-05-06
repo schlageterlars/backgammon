@@ -15,6 +15,9 @@ import play.api.libs.json.Reads
 import de.htwg.se.backgammon.core.api.PlayJsonSupport._
 import play.api.libs.json.Writes
 import akka.http.scaladsl.marshalling.Marshal
+import scala.concurrent.Await
+import scala.concurrent.duration.DurationInt
+
 
 
 class ApiClient(baseUrl: String)(implicit system: ActorSystem) {
@@ -25,15 +28,28 @@ class ApiClient(baseUrl: String)(implicit system: ActorSystem) {
   CoordinatedShutdown(system).addTask(CoordinatedShutdown.PhaseServiceStop, s"shutdown-client-${baseUrl.hashCode}") { () =>
     shutdown
   }
+  
+  def getRequest[Res: Reads](endpoint: String): Future[Either[Throwable, Res]] = {
+    val request = HttpRequest(HttpMethods.GET, uri = baseUrl + endpoint)
 
-  def getRequest(endpoint: String): Future[String] =
-    sendRequest(
-      HttpRequest(
-        method = HttpMethods.GET,
-        uri = baseUrl.concat(endpoint)
-      )
-    )
-
+    Http().singleRequest(request).flatMap { response =>
+      if (response.status.isSuccess()) {
+        Unmarshal(response.entity).to[Res]
+          .map(Right(_))
+          .recover {
+            case parseErr =>
+              Left(new RuntimeException(s"Parsing error: ${parseErr.getMessage}", parseErr))
+          }
+      } else {
+        Unmarshal(response.entity).to[String].map { errorBody =>
+          Left(new RuntimeException(s"HTTP ${response.status.intValue()}: $errorBody"))
+        }.recover {
+          case parseErr =>
+            Left(new RuntimeException(s"HTTP ${response.status.intValue()} and failed to read error body: ${parseErr.getMessage}", parseErr))
+        }
+      }
+    }
+  }
 
   def postRequestWithResult[Req: Writes, Res: Reads](endpoint: String, body: Req): Future[Either[Throwable, Res]] = {
     for {
@@ -57,7 +73,7 @@ class ApiClient(baseUrl: String)(implicit system: ActorSystem) {
         }
     } yield result
   }
-
+  
   def postRequest[Req: Writes](endpoint: String, body: Req): Future[Either[Throwable, Unit]] = {
     for {
         entity <- Marshal(body).to[RequestEntity]
@@ -69,9 +85,12 @@ class ApiClient(baseUrl: String)(implicit system: ActorSystem) {
         } else {
             Unmarshal(response.entity).to[String].map { errorBody =>
             Left(new RuntimeException(s"HTTP ${response.status.intValue()}: $errorBody"))
-            }.recover {
-            case ex => Left(new RuntimeException(s"HTTP ${response.status.intValue()} (error body read failed): ${ex.getMessage}", ex))
-            }
+          }.recover {
+            case ex =>
+              println(s"[ERROR] Failed to read error body: ${ex.getMessage}")
+              ex.printStackTrace()
+              Left(new RuntimeException(s"HTTP ${response.status.intValue()} (error body read failed): ${ex.getMessage}", ex))
+          }
         }
         }
     } yield result

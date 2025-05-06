@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.view.component
+package de.htwg.se.backgammon.ui.component
 
 import scalafx.scene.image.ImageView
 import scalafx.scene.image.Image

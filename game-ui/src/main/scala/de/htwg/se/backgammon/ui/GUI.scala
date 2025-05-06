@@ -1,7 +1,5 @@
-package de.htwg.se.backgammon.view
+package de.htwg.se.backgammon.ui
 
-import de.htwg.se.backgammon.util.Observer
-import de.htwg.se.backgammon.util.Event
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
@@ -26,17 +24,17 @@ import scalafx.scene.control.{Button, Label, ScrollPane}
 import scalafx.scene.layout.{Priority, VBox}
 import scalafx.scene.web.HTMLEditor
 import scalafx.scene.canvas.GraphicsContext
-import de.htwg.se.backgammon.view.component.Board
-import de.htwg.se.backgammon.view.component.Size
+import de.htwg.se.backgammon.ui.component.Board
+import de.htwg.se.backgammon.ui.component.Size
 import de.htwg.se.backgammon.core.IGame
 import scalafx.scene.layout.Pane
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.shape.Circle
-import de.htwg.se.backgammon.view.component.Checker
-import de.htwg.se.backgammon.view.component.util.DraggedChecker
+import de.htwg.se.backgammon.ui.component.Checker
+import de.htwg.se.backgammon.ui.component.util.DraggedChecker
 import scalafx.application.HostServices
-import de.htwg.se.backgammon.view.component.*
-import de.htwg.se.backgammon.view.component.PlayerState
+import de.htwg.se.backgammon.ui.component.*
+import de.htwg.se.backgammon.ui.component.PlayerState
 import scalafx.scene.shape.DrawMode
 import de.htwg.se.backgammon.core.Player
 import de.htwg.se.backgammon.core.IMove
@@ -50,15 +48,17 @@ import scala.util.Random
 import scalafx.application.Platform
 import component.Dice
 import de.htwg.se.backgammon.util.PrettyPrint.PrintBold
-import de.htwg.se.backgammon.controller.IController
 import de.htwg.se.backgammon.core.base.Game
 import de.htwg.se.backgammon.core.base.Move
-import de.htwg.se.backgammon.view.component.configuration.Default.{given}
+import de.htwg.se.backgammon.ui.component.configuration.Default.{given}
 import javafx.animation.AnimationTimer
-import de.htwg.se.backgammon.view.component.util.WinAnimation
+import de.htwg.se.backgammon.ui.component.util.WinAnimation
 import de.htwg.se.backgammon.core.base.BearOffMove
 import scalafx.event.ActionEvent
 import de.htwg.se.backgammon.core.Input.Skip
+import de.htwg.se.backgammon.core.IController
+import de.htwg.se.backgammon.core.Observer
+import de.htwg.se.backgammon.core.Event
 
 class GUI(controller: IController) extends JFXApp3 with Observer {
   controller.add(this)

@@ -7,13 +7,13 @@ import akka.http.scaladsl.server.{ExceptionHandler, Route}
 import org.slf4j.LoggerFactory
 import play.api.libs.json.{JsValue, Json}
 import scala.util.{Failure, Success, Try}
-import de.htwg.se.backgammon.controller.IController
 import akka.http.scaladsl.marshalling._
 import akka.http.scaladsl.model._
 import play.api.libs.json._
 import de.htwg.se.backgammon.core.base.Move
 import de.htwg.se.backgammon.core.base.Game
 import de.htwg.se.backgammon.core.base.DefaultSetup
+import de.htwg.se.backgammon.core.IController
 import de.htwg.se.backgammon.util.ObserverHttp
 
 implicit def playJsonMarshaller[T](implicit writes: Writes[T]): ToEntityMarshaller[T] =
@@ -44,21 +44,35 @@ class Routes(val controller: IController):
 
   private def handleGameDataRequests: Route = get {
     pathPrefix("get") {
-      path("game") { 
-        complete(controller.game)
-      } 
-      path("currentPlayer") { 
-        complete(controller.currentPlayer)
-      } 
-      path("checkersInBar") { 
-        complete(controller.checkersInBar)
-      } 
-      path("dice") { 
-        complete(controller.dice)
-      } 
-      path("gameEnded") { 
-        complete(controller.game.winner.isDefined)
-      }
+      concat(
+        path("game") { 
+          complete(controller.game)
+        },
+        path("currentPlayer") { 
+          complete(controller.currentPlayer)
+        }, 
+        path("hasToBearOff") { 
+          complete(controller.hasToBearOff)
+        }, 
+        path("existsPossibleMoves") { 
+          complete(controller.existsPossibleMoves)
+        }, 
+        path("checkersInBar") { 
+          complete(controller.checkersInBar)
+        }, 
+        path("data") { 
+          complete(controller.data)
+        }, 
+        path("dice") { 
+          complete(controller.dice)
+        }, 
+        path("die") { 
+          complete(controller.die)
+        }, 
+        path("gameEnded") { 
+          complete(controller.game.winner.isDefined)
+        },
+      )
     }
   }
 
@@ -73,6 +87,10 @@ class Routes(val controller: IController):
             val steps: Int = (jsonValue \ "steps").as[Int]
             controller.doAndPublish(controller.put, Move(from, steps))
             complete(StatusCodes.OK)
+          case "skip" =>
+            val steps: Int = (jsonValue \ "steps").as[Int]
+            controller.skip(steps)
+            complete(StatusCodes.OK)
           case "undo" =>
             controller.undoAndPublish(controller.undo)
             complete(StatusCodes.OK)
@@ -80,14 +98,15 @@ class Routes(val controller: IController):
             controller.doAndPublish(controller.redo)
             complete(StatusCodes.OK)
           case "load" =>
-            controller.load match {
+            /*controller.load match {
             case Success(_) =>
                 complete(StatusCodes.OK)
             case Failure(ex) =>
                 complete(StatusCodes.InternalServerError, s"Failed to load model: ${ex.getMessage}")
             }
           case _ =>
-            complete(BadRequest, "Invalid method")
+            complete(BadRequest, "Invalid method")*/
+            complete(StatusCodes.OK)
         }
       }
     }
@@ -123,9 +142,10 @@ class Routes(val controller: IController):
   private def handleRegisterObserverRequest: Route = post { 
     path("registerObserver") {
       entity(as[String]) { json =>
-        val jsonValue: JsValue = Json.parse(json)
-        val observerUrl: String = (jsonValue \ "url").as[String]
+        val jsonValues: JsValue = Json.parse(json)
+        val observerUrl: String = (jsonValues \ "url").as[String]
         controller.add(new ObserverHttp(observerUrl))
+        print(s"Observer registered at: $observerUrl")
         logger.info(s"Observer registered at: $observerUrl")
         complete(StatusCodes.OK)
       }

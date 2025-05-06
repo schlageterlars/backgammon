@@ -55,8 +55,6 @@ lazy val gameEngine = project
       "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
       "com.typesafe.akka" %% "akka-stream"      % akkaVersion,
       "com.typesafe.akka" %% "akka-http"        % akkaHttpVersion,
-      "com.typesafe.akka" %% "akka-discovery"   % "2.8.0"
-
     )
   )
 
@@ -65,9 +63,11 @@ lazy val gameUi = project
   .dependsOn(gameCore)
   .dependsOn(gameEngine)
   .settings(
-    name := "game-ui",
     libraryDependencies ++= Seq(
-      "org.scalafx" %% "scalafx" % "21.0.0-R32"
+      "org.scalafx" %% "scalafx" % "21.0.0-R32",     
+      "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
+      "com.typesafe.akka" %% "akka-stream"      % akkaVersion,
+      "com.typesafe.akka" %% "akka-http"        % akkaHttpVersion
     )
   )
 

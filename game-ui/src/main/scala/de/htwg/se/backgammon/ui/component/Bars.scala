@@ -1,10 +1,10 @@
-package de.htwg.se.backgammon.view.component
+package de.htwg.se.backgammon.ui.component
 
 import de.htwg.se.backgammon.core.IGame
 import de.htwg.se.backgammon.core.Player
 import scalafx.scene.input.MouseEvent
-import de.htwg.se.backgammon.view.component.configuration.ColorPalette
-import de.htwg.se.backgammon.view.component.configuration.FrameConfiguration
+import de.htwg.se.backgammon.ui.component.configuration.ColorPalette
+import de.htwg.se.backgammon.ui.component.configuration.FrameConfiguration
 
 val MARGIN_RIGHT = 25
 

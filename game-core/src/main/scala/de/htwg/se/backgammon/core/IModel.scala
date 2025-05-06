@@ -3,6 +3,9 @@ package de.htwg.se.backgammon.core
 import scala.xml.Elem
 import de.htwg.se.backgammon.core.storage.Storable
 import scala.xml.{Elem, Null, TopScope, Text}
+import de.htwg.se.backgammon.core.base.Model
+import play.api.libs.json.Writes
+import play.api.libs.json.Reads
 
 
 trait IModel extends Storable {
@@ -40,6 +43,12 @@ trait IModel extends Storable {
     diceElem,
     doubletsElem,
     game.asXml  
-  )
+    )
+  }
 }
+
+object IModel {
+  implicit val modelReads: Reads[IModel] = Model.modelReads.map(identity[IModel])
+  implicit val modelWrites: Writes[IModel] = (game: IModel) =>
+    Model.modelWrites.writes(game.asInstanceOf[Model])
 }

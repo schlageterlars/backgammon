@@ -45,7 +45,7 @@ trait ColorPalette {
 ```
 
 ## Customizable Size and Resolution
-Customize the application's size and resolution in the `de.htwg.se.backgammon.view.component.configuration.Default` class. Easily locate and adjust properties or methods to fine-tune the user interface dimensions to your preferences.
+Customize the application's size and resolution in the `de.htwg.se.backgammon.ui.component.configuration.Default` class. Easily locate and adjust properties or methods to fine-tune the user interface dimensions to your preferences.
 
 ## Customizable Backgammon Experience
 

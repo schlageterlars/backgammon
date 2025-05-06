@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.view.component
+package de.htwg.se.backgammon.ui.component
 
 import scalafx.scene.canvas.GraphicsContext
 import javax.swing.plaf.basic.BasicBorders.MarginBorder
@@ -9,12 +9,12 @@ import scalafx.scene.shape.Line
 import scalafx.scene.shape.Shape
 import de.htwg.se.backgammon.core.Player
 import javafx.scene.input.MouseEvent
-import de.htwg.se.backgammon.view.GUI
+import de.htwg.se.backgammon.ui.GUI
 import scalafx.scene.Group
-import de.htwg.se.backgammon.view.component.configuration.BoardConfiguration
-import de.htwg.se.backgammon.view.component.configuration.ColorPalette
-import de.htwg.se.backgammon.view.component.configuration.PointConfiguration
-import de.htwg.se.backgammon.view.component.configuration.Configuration
+import de.htwg.se.backgammon.ui.component.configuration.BoardConfiguration
+import de.htwg.se.backgammon.ui.component.configuration.ColorPalette
+import de.htwg.se.backgammon.ui.component.configuration.PointConfiguration
+import de.htwg.se.backgammon.ui.component.configuration.Configuration
 
 class Board(using conf: BoardConfiguration) extends Pane {
   val (size, xCoord, yCoord, lineWidth, colors) =

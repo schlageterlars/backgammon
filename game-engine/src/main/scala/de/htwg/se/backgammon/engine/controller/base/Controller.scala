@@ -1,7 +1,5 @@
 package de.htwg.se.backgammon.engine.controller.base
 
-import de.htwg.se.backgammon.util.Observable
-import de.htwg.se.backgammon.util.Event
 import de.htwg.se.backgammon.util.Manager
 import de.htwg.se.backgammon.core.IModel
 import de.htwg.se.backgammon.core.IGame
@@ -24,14 +22,13 @@ import de.htwg.se.backgammon.controller.strategy.ValidateMoveStrategy
 import de.htwg.se.backgammon.core.GameState
 import de.htwg.se.backgammon.core.base.NoMove
 import de.htwg.se.backgammon.exception.NoMoveException
-import de.htwg.se.backgammon.controller.IController
 import de.htwg.se.backgammon.controller.PutCommand
 import de.htwg.se.backgammon.core.base.BearInMove
 import de.htwg.se.backgammon.core.base.Move
 import scala.util.boundary
-import de.htwg.se.backgammon.util.Observer
 import de.htwg.se.backgammon.core.base.Model
 import de.htwg.se.backgammon.core.base.Game
+import de.htwg.se.backgammon.core._
 
 case class Controller(private var model: IModel) extends IController {
   def game = model.game
@@ -120,6 +117,7 @@ case class Controller(private var model: IModel) extends IController {
   override def toString = game.toString
 
   private def game_=(game: IGame) = {
+    print(s"notify observers ${subscribers}")
     model.game = game; notifyObservers(Event.Move)
   }
 

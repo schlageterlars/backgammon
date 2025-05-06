@@ -1,13 +1,11 @@
 package de.htwg.se.backgammon
 
 import de.htwg.se.backgammon.engine.controller.base.Controller
-import de.htwg.se.backgammon.view.GUI
-import de.htwg.se.backgammon.view.TUI
+import de.htwg.se.backgammon.ui.GUI
+import de.htwg.se.backgammon.ui.TUI
 import scalafx.application.JFXApp3
 import scala.concurrent.Future
 import scala.concurrent.Await
-import de.htwg.se.backgammon.util.Observer
-import de.htwg.se.backgammon.util.Event
 import scala.util.Success
 import scala.util.Failure
 import de.htwg.se.backgammon.core.IModel
@@ -19,6 +17,8 @@ import de.htwg.se.backgammon.core.base.DefaultSetup
 import de.htwg.se.backgammon.storage.Storage
 
 import de.htwg.se.backgammon.storage.JsonStorage.given_Storage
+import de.htwg.se.backgammon.core.Event
+import de.htwg.se.backgammon.core.Observer
 
 
 private val NUMBER_OF_FIELDS = 24

@@ -1,6 +1,6 @@
-package de.htwg.se.backgammon.view.component.configuration
+package de.htwg.se.backgammon.ui.component.configuration
 
-import de.htwg.se.backgammon.view.component.Size
+import de.htwg.se.backgammon.ui.component.Size
 
 object Default {
   given ColorPalette = PrimaryColorPalette()

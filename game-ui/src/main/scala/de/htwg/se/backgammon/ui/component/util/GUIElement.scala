@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.view.component
+package de.htwg.se.backgammon.ui.component
 
 import javafx.scene.input.MouseEvent
 import javafx.event.EventType

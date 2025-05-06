@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.view.component
+package de.htwg.se.backgammon.ui.component
 
 import scalafx.scene.Group
 import de.htwg.se.backgammon.core.Player
@@ -6,7 +6,7 @@ import scalafx.scene.shape.Rectangle
 import scalafx.scene.effect.GaussianBlur
 import scalafx.scene.paint.Color
 import scalafx.scene.input.MouseEvent
-import de.htwg.se.backgammon.view.component.configuration.ColorPalette
+import de.htwg.se.backgammon.ui.component.configuration.ColorPalette
 
 case class Bar(
     colors: ColorPalette,
