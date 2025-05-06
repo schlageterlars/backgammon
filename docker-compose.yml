@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  game-engine:
+    build:
+      context: ./game-engine
+    ports:
+      - "8080:8080"
+    networks:
+      - game-net
+
+  game-ui:
+    build:
+      context: ./game-ui
+    ports:
+      - "9000:9000"
+    networks:
+      - game-net
+
+networks:
+  game-net:

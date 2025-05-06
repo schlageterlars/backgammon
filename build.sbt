@@ -1,3 +1,4 @@
+ThisBuild / libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % "always"
 ThisBuild / organization := "de.htwg.se.backgammon"
 ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / scalaVersion := "3.5.0"
@@ -50,6 +51,7 @@ lazy val gameCore = project
 lazy val gameEngine = project
   .in(file("game-engine"))
   .dependsOn(gameCore)
+  .enablePlugins(JavaAppPackaging)
   .settings(
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
@@ -61,7 +63,7 @@ lazy val gameEngine = project
 lazy val gameUi = project
   .in(file("game-ui"))
   .dependsOn(gameCore)
-  .dependsOn(gameEngine)
+  .enablePlugins(JavaAppPackaging)
   .settings(
     libraryDependencies ++= Seq(
       "org.scalafx" %% "scalafx" % "21.0.0-R32",     

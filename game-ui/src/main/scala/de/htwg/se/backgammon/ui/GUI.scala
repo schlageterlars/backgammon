@@ -38,7 +38,6 @@ import de.htwg.se.backgammon.ui.component.PlayerState
 import scalafx.scene.shape.DrawMode
 import de.htwg.se.backgammon.core.Player
 import de.htwg.se.backgammon.core.IMove
-import de.htwg.se.backgammon.controller.PutCommand
 import de.htwg.se.backgammon.util.Command
 import de.htwg.se.backgammon.exception.MoveException
 import de.htwg.se.backgammon.core.base.DefinedMove
@@ -47,7 +46,7 @@ import scala.util.Try
 import scala.util.Random
 import scalafx.application.Platform
 import component.Dice
-import de.htwg.se.backgammon.util.PrettyPrint.PrintBold
+import de.htwg.se.backgammon.ui.util.PrettyPrint.PrintBold
 import de.htwg.se.backgammon.core.base.Game
 import de.htwg.se.backgammon.core.base.Move
 import de.htwg.se.backgammon.ui.component.configuration.Default.{given}

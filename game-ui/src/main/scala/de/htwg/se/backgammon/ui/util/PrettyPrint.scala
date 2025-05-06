@@ -1,4 +1,4 @@
-package de.htwg.se.backgammon.util
+package de.htwg.se.backgammon.ui.util
 
 import de.htwg.se.backgammon.core.Player
 import de.htwg.se.backgammon.core.IGame
