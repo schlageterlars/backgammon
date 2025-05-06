@@ -45,7 +45,7 @@ object ObserverReceiver {
         parameter("event") { string =>
           Event.fromString(string) match {
             case Some(event) => 
-              print(s"retrieved event $string")
+              println(s"retrieved event $string")
               controller.onEvent(event)
             case None => complete(StatusCodes.BadRequest, "Invalid event")
           }
