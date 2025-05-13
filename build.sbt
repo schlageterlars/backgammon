@@ -1,4 +1,13 @@
+import sbtassembly.MergeStrategy
+
+def mergeStrategy(x: String): MergeStrategy = x match {
+  case "META-INF/MANIFEST.MF" => MergeStrategy.discard
+  case "reference.conf" => MergeStrategy.concat
+  case x => MergeStrategy.first
+}
+
 ThisBuild / libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % "always"
+ThisBuild / assemblyMergeStrategy := mergeStrategy
 ThisBuild / organization := "de.htwg.se.backgammon"
 ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / scalaVersion := "3.5.0"
@@ -38,7 +47,9 @@ lazy val game = project
 
 lazy val gameCore = project
   .in(file("game-core"))
+  .enablePlugins(AssemblyPlugin)
   .settings(
+    name := "core",
     libraryDependencies ++= Seq(
       "org.scala-lang.modules" %% "scala-xml"           % "2.2.0",
       "com.typesafe.play"      %% "play-json"           % playJsonVersion,
@@ -51,8 +62,9 @@ lazy val gameCore = project
 lazy val gameEngine = project
   .in(file("game-engine"))
   .dependsOn(gameCore)
-  .enablePlugins(JavaAppPackaging)
+  .enablePlugins(AssemblyPlugin)
   .settings(
+    name := "engine",
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
       "com.typesafe.akka" %% "akka-stream"      % akkaVersion,
@@ -63,8 +75,9 @@ lazy val gameEngine = project
 lazy val gameUi = project
   .in(file("game-ui"))
   .dependsOn(gameCore)
-  .enablePlugins(JavaAppPackaging)
+  .enablePlugins(AssemblyPlugin)
   .settings(
+    name := "ui",
     libraryDependencies ++= Seq(
       "org.scalafx" %% "scalafx" % "21.0.0-R32",     
       "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,

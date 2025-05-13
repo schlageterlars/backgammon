@@ -1,0 +1,15 @@
+FROM sbtscala/scala-sbt:eclipse-temurin-jammy-21_35_1.9.6_3.3.1 AS build
+
+WORKDIR /app
+COPY ./ /app
+
+RUN sbt clean gameEngine/assembly
+
+FROM alpine/java:21-jdk AS run
+
+WORKDIR /app
+
+COPY --from=build /app/game-engine/target/scala-3.5.0/engine-assembly-0.1.0-SNAPSHOT.jar /app/engine.jar
+
+EXPOSE 8080
+CMD [ "java", "-jar", "/app/engine.jar", "0.0.0.0", "engine" ]

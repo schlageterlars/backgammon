@@ -2,19 +2,30 @@ version: "3.9"
 services:
   game-engine:
     build:
-      context: ./game-engine
+      dockerfile: Dockerfile-engine
     ports:
       - "8080:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - game-net
 
   game-ui:
     build:
-      context: ./game-ui
+      dockerfile: Dockerfile-ui
     ports:
       - "9000:9000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - game-net
+    environment:
+      - DISPLAY=host.docker.internal:0.0
+      - PRISM_ORDER=sw
+      - JAVAFX_USE_VSYNC=false
+      - GDK_BACKEND=x11
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
 
 networks:
   game-net:
