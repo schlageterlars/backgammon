@@ -56,6 +56,12 @@ lazy val gameCore = project
       "com.typesafe.akka"      %% "akka-actor-typed"    % akkaVersion,
       "com.typesafe.akka"      %% "akka-stream"         % akkaVersion,
       "com.typesafe.akka"      %% "akka-http"           % akkaHttpVersion,
+      "com.typesafe.slick"     %% "slick"               % "3.5.0",
+      "org.slf4j" % "slf4j-nop" % "1.6.4"   
+    ),
+    resolvers ++= Seq(
+      Resolver.sonatypeRepo("releases"),
+      Resolver.mavenCentral
     )
   )
 
@@ -68,7 +74,7 @@ lazy val gameEngine = project
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
       "com.typesafe.akka" %% "akka-stream"      % akkaVersion,
-      "com.typesafe.akka" %% "akka-http"        % akkaHttpVersion,
+      "com.typesafe.akka" %% "akka-http"        % akkaHttpVersion, 
     )
   )
 
