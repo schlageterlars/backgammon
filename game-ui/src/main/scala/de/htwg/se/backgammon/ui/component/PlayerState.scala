@@ -41,8 +41,8 @@ class PlayerState(using cf: PlayerConfiguration) extends Group {
 
   def createEmoji(_y: Double, player: Player) = {
     val emoji = new Text {
-      text = "🎲"
       font = Font.font("Arial", 30)
+      text = "X" //"🎲"
       x = cf.xCoord + 10
       y = _y + +PLAYER_BOX_WIDTH / 2 + 10
       smooth = true

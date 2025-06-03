@@ -24,17 +24,22 @@ import de.htwg.se.backgammon.core.api.ApiClient
 import scala.concurrent.duration.DurationInt
 import de.htwg.se.backgammon.core.base.Move
 import de.htwg.se.backgammon.core.Observer
+import de.htwg.se.backgammon.core.base.database.ModelWithNickname
+import de.htwg.se.backgammon.core.base.database.GameData
+import de.htwg.se.backgammon.core.api.PlayJsonSupport._
 
 
 case class HTTPController(
   private var model: IModel,
-  baseUrl: String = "http://localhost:8080"
+  baseUrl: String = "http://game-engine:8080",
+  storageUrl: String = "http://game-storage:8081"
 )( implicit val system: ActorSystem,
   val ec: ExecutionContextExecutor,
   val mat: Materializer) extends IController {
-
   val client = ApiClient(baseUrl)
+  val storageClient = ApiClient(storageUrl)
 
+  var name: Option[String] = Option.empty
   override def game: IGame = fetchData[IGame]("/get/game")
 
   override def currentPlayer: Player = fetchData[Player]("/get/currentPlayer")
@@ -56,7 +61,78 @@ case class HTTPController(
   }
 
   def onEvent(event: Event) = {
+    def changed(e: Event): Boolean = e match {
+      case Event.Move | Event.DiceRolled | Event.PlayerChanged => true
+      case _                                                   => false
+    }
+
+    if (changed(event)) { 
+      if name.isDefined then
+        save()
+      else 
+        println("Game changed, would like to save, but no name is defined.")
+    }
     notifyObservers(event)
+  }
+
+  def init()= {
+    load().onComplete {
+    case Success(Success(gameData)) =>
+      println(s"Game data loaded: $gameData") 
+      val jsonString = Json.stringify(Json.toJson(gameData)) // Convert GameData to JSON string
+      val entity = HttpEntity(ContentTypes.`application/json`, jsonString) // Create the HTTP entity
+      val request = HttpRequest(HttpMethods.POST, uri = s"$baseUrl/init", entity = entity) // Build the request
+      Http().singleRequest(request) // Send it
+    case Success(Failure(exception)) =>
+      println(s"Game data loading failed: ${exception.getMessage}")
+    case Failure(futureException) =>
+      println(s"Future failed: ${futureException.getMessage}")
+  }
+  }
+
+    
+  def load(): Future[Try[GameData]] = {
+    val name = this.name.getOrElse(return Future.successful(Failure(new RuntimeException("Name not defined"))))
+    val uri = s"$storageUrl/load?name=$name"
+    val request = HttpRequest(method = HttpMethods.GET, uri = uri)
+
+    Http().singleRequest(request).flatMap { response =>
+      if (response.status == StatusCodes.OK) {
+        Unmarshal(response.entity).to[GameData].map(Success(_))
+      } else if (response.status == StatusCodes.NotFound) {
+        Future.successful(Failure(new RuntimeException("No game data found")))
+      } else {
+        Future.successful(Failure(new RuntimeException(s"Unexpected status: ${response.status}")))
+      }
+    }.recover {
+      case ex => Failure(ex)
+    }
+  }
+
+  def save(): Unit = {
+    val name = this.name.getOrElse(return)
+    val game = this.game
+    val data = GameData(id = 0, name, game.fields, game.barWhite, game.barBlack, this.data.player)
+    val json = Json.toJson(data)
+    val entity = HttpEntity(ContentTypes.`application/json`, json.toString())
+
+    val request = HttpRequest(
+      method = HttpMethods.POST,
+      uri = s"$storageUrl/publish",
+      entity = entity
+    )
+
+    Http().singleRequest(request).map { response =>
+      if (response.status == StatusCodes.OK) {
+        println("game data successfully saved.")
+        // parse response to model
+        Success(IGame.default)
+      } else {
+        Failure(new RuntimeException(s"Unexpected status code: ${response.status}"))
+      }
+    }.recover {
+      case ex => Failure(ex)
+    }
   }
 
   override def put(move: IMove): Try[IGame] = {
@@ -91,11 +167,16 @@ case class HTTPController(
   override def add(s: Observer): Unit = {
     print("Register observer")
     super.add(s)
-    client.postRequest[JsObject]("/registerObserver",  Json.obj("url" -> "http://localhost:9000")) 
+    client.postRequest[JsObject]("/registerObserver", Json.obj("url" -> "http://game-ui:9000")).map {
+      case Right(_) =>
+        println("Client is succeesfully registered.")
+      case Left(error) =>
+        println(s"Client is not registered. Request failed with error: ${error.getMessage}")
+        error.printStackTrace()
+    }
   }
 
-  override def init(game: Game): Unit = {}
-  
+  override def init(game: Game, whoseTurn: Player): Unit = {}  
   override def quit: Unit = {}
 
   override def undoAndPublish(doThis: => Option[GameState]): Unit = {}

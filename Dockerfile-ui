@@ -25,6 +25,7 @@ FROM ubuntu:22.04
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+      fonts-noto-color-emoji \
       openjdk-21-jre-headless \
       libx11-6 libxxf86vm1 libxext6 libxrender1 libxtst6 libxi6 \
       libgl1-mesa-glx libegl1 libgles2-mesa libgtk-3-0 x11-apps && \
@@ -35,4 +36,4 @@ WORKDIR /app
 COPY --from=build /app/game-ui/target/scala-3.5.0/ui-assembly-0.1.0-SNAPSHOT.jar /app/ui.jar
 
 EXPOSE 9000
-CMD [ "java", "-jar", "/app/ui.jar", "0.0.0.0", "ui" ]
+CMD [ "java", "-Dprism.order=sw", "-jar", "/app/ui.jar", "0.0.0.0", "ui" ]

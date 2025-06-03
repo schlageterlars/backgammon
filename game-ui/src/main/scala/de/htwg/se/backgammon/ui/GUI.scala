@@ -73,6 +73,8 @@ class GUI(controller: IController) extends JFXApp3 with Observer {
   val bars: Bars = Bars.createDefault()
   var skipButton: Button = null;
 
+  var onStart: () => Unit = () => ()
+
   override def update(event: Event, exception: Option[Throwable]): Unit = {
     Platform.runLater(onEvent(event, exception))
   }
@@ -107,61 +109,66 @@ class GUI(controller: IController) extends JFXApp3 with Observer {
   }
 
   override def start(): Unit = {
-    stage = new JFXApp3.PrimaryStage {
-      title = "Backgammon"
-      resizable = false
-      scene = new Scene(
-        given_FrameConfiguration.width,
-        given_FrameConfiguration.height
-      ) {
-        pane = new Pane {
-          board.setGame(controller.game)
-          dice.create(2)
+    onStart()
+    try {
+      stage = new JFXApp3.PrimaryStage {
+        title = "Backgammon"
+        resizable = false
+        scene = new Scene(
+          given_FrameConfiguration.width,
+          given_FrameConfiguration.height
+        ) {
+          // — all of your existing pane, event handlers, etc. —
+          pane = new Pane {
+            board.setGame(controller.game)
+            dice.create(2)
+            val canvas = new Canvas(
+              given_FrameConfiguration.width,
+              given_FrameConfiguration.height
+            )
+            winAnimation = WinAnimation(canvas)
+            skipButton = SkipButton()
+            skipButton.onAction = (_: ActionEvent) => {
+              controller.skip(controller.die)
+              skipButton.visible = !controller.existsPossibleMoves
+            }
+            children = Seq(
+              board,
+              playerState,
+              bars,
+              dice,
+              canvas,
+              skipButton
+            )
+          }
 
-          val canvas = new Canvas(
-            given_FrameConfiguration.width,
-            given_FrameConfiguration.height
-          )
-          winAnimation = WinAnimation(canvas)
-          skipButton = SkipButton()
-          skipButton.onAction = (event: ActionEvent) => {
-            controller.skip(controller.die)
+          onMouseClicked = (event: MouseEvent) => {
+            board.handleMouseEvent(event, onClicked = onBoardClicked)
+            bars.handleMouseEvent(event, onClicked = onBoardClicked)
+          }
+
+          onMouseMoved = (event: MouseEvent) => {
+            board.handleMouseEvent(event, doHovering = doHovering)
+            bars.handleMouseEvent(event, doHovering = doHovering)
+            if (draggedChecker.isDefined) then draggedChecker.move(event)
+          }
+
+          onShown = () => {
+            dice.roll(controller.dice)
+            bars.setGame(controller.game)
+            onPlayerChanged(controller.currentPlayer)
             skipButton.visible = !controller.existsPossibleMoves
           }
-          children = Seq(
-            board,
-            playerState,
-            bars,
-            dice,
-            canvas,
-            skipButton
-          )
+
+          content = pane
         }
-
-        onMouseClicked = (event: MouseEvent) => {
-          board.handleMouseEvent(event, onClicked = onBoardClicked)
-          bars.handleMouseEvent(event, onClicked = onBoardClicked)
-        }
-
-        onMouseMoved = (event: MouseEvent) => {
-          board.handleMouseEvent(event, doHovering = doHovering)
-          bars.handleMouseEvent(event, doHovering = doHovering)
-
-          if (draggedChecker.isDefined) then draggedChecker.move(event)
-        }
-
-        onShown = () => {
-          dice.roll(controller.dice)
-          bars.setGame(controller.game)
-          onPlayerChanged(controller.currentPlayer)
-          skipButton.visible = !controller.existsPossibleMoves
-        }
-
-        content = pane
       }
+    } catch {
+      case t: Throwable =>
+        t.printStackTrace()
+        javafx.application.Platform.exit()
     }
-  }
-
+}
   def doHovering(element: GUIElement): Boolean = element match {
     case point: Point     => draggedChecker.isDefined
     case checker: Checker => draggedChecker.isEmpty

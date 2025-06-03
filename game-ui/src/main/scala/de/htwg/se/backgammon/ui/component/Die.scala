@@ -88,9 +88,12 @@ class Die(
     (y + fitHeight) > die.y).get()
   }
 
-  private def getImageByDots(dots: Int) = new Image(
-    s"file:src/main/resources/$dots.png"
-  )
+  private def getImageByDots(dots: Int): Image = {
+    val stream = getClass.getResourceAsStream(s"/$dots.png")
+    if (stream == null)
+      throw new RuntimeException(s"Image resource /$dots.png not found in classpath")
+    new Image(stream)
+  }
 
   private def randomImage: Image = getImageByDots(Random.between(1, 7))
 

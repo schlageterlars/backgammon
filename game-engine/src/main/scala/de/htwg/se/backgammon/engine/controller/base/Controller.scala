@@ -89,11 +89,12 @@ case class Controller(private var model: IModel) extends IController {
     this.game = game
   }
 
-  def init(game: Game) = {
+  def init(game: Game, whoseTurn: Player) = {
     model = new Model(
           game,
-          new Dice()
-        )
+          whoseTurn,
+          new Dice(),
+    )
   }
 
   def handle(game: IGame, steps: Int) = {

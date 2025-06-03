@@ -25,7 +25,7 @@ trait IController extends Observable {
   def redo(move: IMove): Try[IGame]
   def undo: Option[GameState]
   def quit: Unit
-  def init(game: Game): Unit
+  def init(game: Game, whoseTurn: Player): Unit
 
   def existsPossibleMoves: Boolean
   def data: IModel

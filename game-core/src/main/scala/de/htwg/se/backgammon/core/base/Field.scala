@@ -2,6 +2,10 @@ package de.htwg.se.backgammon.core.base
 
 import de.htwg.se.backgammon.core.Player
 import de.htwg.se.backgammon.core.IField
+import play.api.libs.json.Reads
+import play.api.libs.json.Writes
+import play.api.libs.json.JsValue
+import play.api.libs.json.JsNumber
 
 class Field(val pieces: Int) extends IField {
 
@@ -49,4 +53,11 @@ class Field(val pieces: Int) extends IField {
     if (pieces == 0) Player.None
     else if (pieces > 0) Player.White
     else Player.Black
+}
+
+object Field {
+  implicit val iFieldReads: Reads[Field] = (json: JsValue) =>
+    json.validate[Int].map(pieces => Field(pieces))
+
+  implicit val iFieldWrites: Writes[Field] = Writes(obj => JsNumber(obj.pieces))
 }

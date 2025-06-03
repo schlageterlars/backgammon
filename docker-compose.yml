@@ -13,19 +13,70 @@ services:
   game-ui:
     build:
       dockerfile: Dockerfile-ui
+    tty: true
+    stdin_open: true
     ports:
       - "9000:9000"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
       - game-net
+    depends_on:
+      - game-engine
     environment:
       - DISPLAY=host.docker.internal:0.0
-      - PRISM_ORDER=sw
-      - JAVAFX_USE_VSYNC=false
-      - GDK_BACKEND=x11
+      - JAVA_TOOL_OPTIONS=-Dprism.verbose=true -Dprism.order=sw
+      - LIBGL_ALWAYS_INDIRECT=1
+      - PRISM_ORDER=sw 
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
 
+  game-storage:
+    build:
+      dockerfile: Dockerfile-storage
+    ports:
+      - "8081:8081"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - mongo
+      - postgres
+    networks:
+      - game-net
+    environment:
+      DB_TYPE: "mongo"  # or "slick" for Slick/Postgres
+    env_file:
+      - mongo.env
+      - postgres.env
+    volumes:
+      - mongo-data:/data/db
+
+  mongo:
+    image: mongo:7.0
+    container_name: backgammon-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    env_file:
+      - mongo.env
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - game-net
+
+  postgres:
+    image: postgres:15
+    env_file:
+      - postgres.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+
 networks:
   game-net:
+
+volumes:
+  mongo-data:
+  pgdata:

@@ -84,6 +84,7 @@ lazy val gameUi = project
   .enablePlugins(AssemblyPlugin)
   .settings(
     name := "ui",
+    Compile / unmanagedResourceDirectories += baseDirectory.value / "src" / "main" / "resources",
     libraryDependencies ++= Seq(
       "org.scalafx" %% "scalafx" % "21.0.0-R32",     
       "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
@@ -95,9 +96,11 @@ lazy val gameUi = project
 lazy val gameStorage = project
   .in(file("game-storage"))
   .dependsOn(gameCore)
+  .enablePlugins(AssemblyPlugin)
   .settings(
-    name := "game-storage",
+    name := "storage",
     libraryDependencies ++= Seq(
+      "org.mongodb.scala" %% "mongo-scala-driver" % "5.4.0" cross CrossVersion.for3Use2_13,
       "com.typesafe.play" %% "play-json"        %   playJsonVersion,
       "com.typesafe.akka" %% "akka-actor-typed" %   akkaVersion,
       "com.typesafe.akka" %% "akka-stream"      %   akkaVersion,

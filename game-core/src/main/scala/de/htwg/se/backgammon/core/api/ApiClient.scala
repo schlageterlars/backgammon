@@ -17,6 +17,7 @@ import play.api.libs.json.Writes
 import akka.http.scaladsl.marshalling.Marshal
 import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt
+import akka.http.scaladsl.unmarshalling.PredefinedFromEntityUnmarshallers
 
 
 
@@ -74,25 +75,31 @@ class ApiClient(baseUrl: String)(implicit system: ActorSystem) {
     } yield result
   }
   
+
   def postRequest[Req: Writes](endpoint: String, body: Req): Future[Either[Throwable, Unit]] = {
     for {
-        entity <- Marshal(body).to[RequestEntity]
-        request = HttpRequest(HttpMethods.POST, uri = baseUrl + endpoint, entity = entity)
-        response <- Http().singleRequest(request)
-        result <- {
+      entity <- Marshal(body).to[RequestEntity]
+      request = HttpRequest(HttpMethods.POST, uri = baseUrl + endpoint, entity = entity)
+      response <- Http().singleRequest(request)
+      result <- {
         if (response.status.isSuccess()) {
-            Future.successful(Right(()))
+          Future.successful(Right(()))
         } else {
-            Unmarshal(response.entity).to[String].map { errorBody =>
-            Left(new RuntimeException(s"HTTP ${response.status.intValue()}: $errorBody"))
+          // Force unmarshal as plain string regardless of content-type
+          Unmarshal(response.entity).to[String](PredefinedFromEntityUnmarshallers.stringUnmarshaller).map { errorBody =>
+            Left(new RuntimeException(s"HTTP ${response.status.intValue()} from [$endpoint]: $errorBody"))
           }.recover {
             case ex =>
-              println(s"[ERROR] Failed to read error body: ${ex.getMessage}")
+              val contentType = response.entity.contentType
+              println(s"[ERROR] Failed to read error body for endpoint [$endpoint]: ${ex.getMessage} | Content-Type: $contentType")
               ex.printStackTrace()
-              Left(new RuntimeException(s"HTTP ${response.status.intValue()} (error body read failed): ${ex.getMessage}", ex))
+              Left(new RuntimeException(
+                s"HTTP ${response.status.intValue()} from [$endpoint] (error body read failed, content type: $contentType): ${ex.getMessage}",
+                ex
+              ))
           }
         }
-        }
+      }
     } yield result
   }
 

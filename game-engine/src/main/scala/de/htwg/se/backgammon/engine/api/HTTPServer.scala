@@ -44,7 +44,13 @@ object HttpServerWithActor {
       }
     }, routes.routes)
 
-    Http().bindAndHandle(route, "localhost", 8080)
-    println("Server is running at http://localhost:8080")
+    val bindingFuture =  Http().bindAndHandle(route, "0.0.0.0", 8080)
+
+    bindingFuture.failed.foreach { ex =>
+      println(s"Failed to bind HTTP endpoint, terminating system. Reason: ${ex.getMessage}")
+      system.terminate()
+    }
+
+    println("Server started at http://0.0.0.0:8080")
   }
 }
