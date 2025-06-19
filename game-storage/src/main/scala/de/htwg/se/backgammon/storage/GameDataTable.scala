@@ -14,25 +14,27 @@ class GameDataTable(tag: Tag) extends Table[GameData](tag, "game_data") {
   def barWhite  = column[Int]("bar_white")
   def barBlack  = column[Int]("bar_black")
   def whoseTurn = column[String]("whose_turn")
+  def timestamp = column[Long]("timestamp")
 
-  private type RowTuple = (Int, String, String, Int, Int, String)
+
+  private type RowTuple = (Int, String, String, Int, Int, String, Long)
 
   // Mapping: Tupel -> GameData
   private val toGameData: RowTuple => GameData = {
-    case (id, name, fieldsStr, white, black, turnStr) =>
+    case (id, name, fieldsStr, white, black, turnStr, timestamp) =>
       val parsedFields = FieldList.from(fieldsStr).fields
       val turn         = Player.withName(turnStr)
-      GameData(id, name, parsedFields, white, black, turn)
+      GameData(id, name, parsedFields, white, black, turn, timestamp)
   }
 
   // Mapping: GameData -> Tupel
   private val fromGameData: GameData => Option[RowTuple] = { gd =>
     val fieldList = FieldList(gd.fields)
-    Some((gd.id, gd.name, fieldList.to(), gd.barWhite, gd.barBlack, gd.whoseTurn.toString()))
+    Some((gd.id, gd.name, fieldList.to(), gd.barWhite, gd.barBlack, gd.whoseTurn.toString(), gd.timestamp))
   }
 
   // Slick-Projektion
-  override def * = (id, name, fields, barWhite, barBlack, whoseTurn).<>(
+  override def * = (id, name, fields, barWhite, barBlack, whoseTurn, timestamp).<>(
     toGameData,
     fromGameData
   )

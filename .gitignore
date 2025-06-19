@@ -50,8 +50,7 @@ game-core/project/
 game-ui/target/
 game-engine/target/
 game-storage/target/
-
-
+metric/target/
 src/target
 
 /target/

@@ -81,3 +81,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## To run docker with UI on MacOS
 docker run -e DISPLAY=host.docker.internal:0 -v /tmp/.X11-unix:/tmp/.X11-unix backgammon-game-ui-1
 xhost + 127.0.0.1
+
+
+Für nächste Woche Gatterling beim Performance Testen von Datenbanken

@@ -26,9 +26,11 @@ class GameDataCodec extends Codec[GameData] {
     val barWhite  = reader.readInt32("barWhite")
     val barBlack  = reader.readInt32("barBlack")
     val turn      = reader.readString("whoseTurn")
+    val timestamp = reader.readDouble("timestamp")
+
     reader.readEndDocument()
 
-    GameData(id, name, fields, barWhite, barBlack, de.htwg.se.backgammon.core.Player.withName(turn))
+    GameData(id, name, fields, barWhite, barBlack, de.htwg.se.backgammon.core.Player.withName(turn), timestamp.toLong)
   }
 
   override def getEncoderClass: Class[GameData] = classOf[GameData]

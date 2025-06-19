@@ -101,6 +101,7 @@ lazy val gameStorage = project
     name := "storage",
     libraryDependencies ++= Seq(
       "org.mongodb.scala" %% "mongo-scala-driver" % "5.4.0" cross CrossVersion.for3Use2_13,
+      "com.typesafe.slick"     %% "slick"               % "3.5.0",
       "com.typesafe.play" %% "play-json"        %   playJsonVersion,
       "com.typesafe.akka" %% "akka-actor-typed" %   akkaVersion,
       "com.typesafe.akka" %% "akka-stream"      %   akkaVersion,
@@ -108,3 +109,19 @@ lazy val gameStorage = project
     )
   )
 
+lazy val metric = project
+  .in(file("metric"))
+  .dependsOn(gameCore, gameStorage)
+  .enablePlugins(GatlingPlugin)
+  .settings(
+    name := "metric",
+    libraryDependencies ++= Seq(
+      "com.typesafe" % "config" % "1.4.3",  
+      "org.postgresql" % "postgresql" % "42.7.3",
+      "com.typesafe.slick"     %% "slick"               % "3.5.0",
+      "com.typesafe.slick" %% "slick-hikaricp" % "3.5.1",
+      "org.mongodb.scala" %% "mongo-scala-driver" % "5.4.0" cross CrossVersion.for3Use2_13,
+      "io.gatling.highcharts" % "gatling-charts-highcharts" % "3.13.5" % Test,
+      "io.gatling"            % "gatling-test-framework"    % "3.13.5" % Test
+    )
+  )

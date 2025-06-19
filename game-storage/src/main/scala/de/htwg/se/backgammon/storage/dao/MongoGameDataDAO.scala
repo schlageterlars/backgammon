@@ -17,6 +17,7 @@ import com.mongodb.client.model.FindOneAndUpdateOptions
 import org.mongodb.scala.model.ReturnDocument
 import org.mongodb.scala.model.Filters
 import de.htwg.se.backgammon.core.base.Field
+import de.htwg.se.backgammon.storage.api.HttpServer.timeout
 
 
 class MongoGameDataDAO(client: MongoClient, collectionGameData: MongoCollection[GameData], collectionGameEntry: MongoCollection[GameEntry])(implicit ec: ExecutionContext) extends GameDataDAO {
@@ -79,7 +80,8 @@ class MongoGameDataDAO(client: MongoClient, collectionGameData: MongoCollection[
       fields = fieldsArray,
       barWhite = doc.getInteger("barWhite"),
       barBlack = doc.getInteger("barBlack"),
-      whoseTurn = Player.withName(doc.getString("whoseTurn"))
+      whoseTurn = Player.withName(doc.getString("whoseTurn")),
+      timestamp = doc.getLong("timestamp")
     )
   }
 

@@ -27,6 +27,7 @@ import de.htwg.se.backgammon.core.Observer
 import de.htwg.se.backgammon.core.base.database.ModelWithNickname
 import de.htwg.se.backgammon.core.base.database.GameData
 import de.htwg.se.backgammon.core.api.PlayJsonSupport._
+import java.time.Instant
 
 
 case class HTTPController(
@@ -112,7 +113,7 @@ case class HTTPController(
   def save(): Unit = {
     val name = this.name.getOrElse(return)
     val game = this.game
-    val data = GameData(id = 0, name, game.fields, game.barWhite, game.barBlack, this.data.player)
+    val data = GameData(id = 0, name, game.fields, game.barWhite, game.barBlack, this.data.player, Instant.now.getEpochSecond)
     val json = Json.toJson(data)
     val entity = HttpEntity(ContentTypes.`application/json`, json.toString())
 
