@@ -34,7 +34,8 @@ object HttpServerWithActor {
   def main(args: Array[String]): Unit = {
     val requestProcessingActor = system.actorOf(Props(new RequestProcessingActor()(executionContext)))
 
-    val routes = new Routes(Controller(Model.default))
+    val controller = Controller(Model.default)
+    val routes = new Routes(controller)
     val route = concat( path("process") {
       post {
         entity(as[String]) { message =>
@@ -44,6 +45,7 @@ object HttpServerWithActor {
       }
     }, routes.routes)
 
+    val kafka = KafkaObserver(controller)
     val bindingFuture =  Http().bindAndHandle(route, "0.0.0.0", 8080)
 
     bindingFuture.failed.foreach { ex =>

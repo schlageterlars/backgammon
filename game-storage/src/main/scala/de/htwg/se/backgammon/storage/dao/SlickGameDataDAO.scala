@@ -46,4 +46,12 @@ class SlickGameDataDAO(db: Database)(implicit ec: ExecutionContext) extends Game
   }
    
   override def name: String = "slick"
+
+  var nickname: String = ""
+
+  override def getNickname(): String = nickname
+
+  override def setNickname(name: String): Unit =  {
+    this.nickname = name
+  }
 }

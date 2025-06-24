@@ -38,6 +38,8 @@ object HttpServer {
   def main(args: Array[String]): Unit = {
     val db = dao()
     println(s"Initiziled dao. (${db.name})")
+
+    GameEventConsumer.run(db)
     
     val bindingFuture =  Http().bindAndHandle(Routes(db).routes, "0.0.0.0", 8081)
     bindingFuture.failed.foreach { ex =>

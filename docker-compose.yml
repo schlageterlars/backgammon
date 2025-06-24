@@ -9,6 +9,10 @@ services:
       - "host.docker.internal:host-gateway"
     networks:
       - game-net
+    depends_on:
+      - kafka
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
 
   game-ui:
     build:
@@ -41,10 +45,12 @@ services:
     depends_on:
       - mongo
       - postgres
+      - kafka
     networks:
       - game-net
     environment:
       DB_TYPE: "mongo"  # or "slick" for Slick/Postgres
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
     env_file:
       - mongo.env
       - postgres.env
@@ -73,6 +79,38 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - game-net
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    ports:
+      - "9092:9092"    # container-internal clients
+      - "29092:29092"  # host system (localhost) access
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    networks:
+      - game-net
+
+  event-relay:
+    build:    
+      dockerfile: event-relay/Dockerfile
+    networks:
+      - game-net
+    depends_on:
+      - kafka
+      - game-storage
 
 networks:
   game-net:

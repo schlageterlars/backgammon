@@ -18,34 +18,58 @@ import org.mongodb.scala.model.ReturnDocument
 import org.mongodb.scala.model.Filters
 import de.htwg.se.backgammon.core.base.Field
 import de.htwg.se.backgammon.storage.api.HttpServer.timeout
+import akka.stream.scaladsl.Source
+import akka.stream.scaladsl.Flow
+import akka.NotUsed
+import akka.stream.scaladsl.Sink
+import akka.actor.ActorSystem
+import akka.stream.Materializer
 
 
 class MongoGameDataDAO(client: MongoClient, collectionGameData: MongoCollection[GameData], collectionGameEntry: MongoCollection[GameEntry])(implicit ec: ExecutionContext) extends GameDataDAO {
+  var nickname: String = ""
+
+  override def getNickname(): String = nickname
+
+  override def setNickname(name: String): Unit =  {
+    this.nickname = name
+  }
+
+  private implicit val system: ActorSystem = ActorSystem(getClass.getSimpleName.init)
+  private implicit val materializer: Materializer = Materializer(system)
 
   initCounterIfNotExists()
 
   override def save(data: GameData, nickname: String): Future[Int] = {
-    findGameDataByNickname(data.name).flatMap {
-      case Some(existingGame) =>
-        println(s"✅ Found game data for name ${data.name} with id ${existingGame.id}")
-        updateGameData(existingGame.id, data).map { modifiedCount =>
-          println(s"🔁 UpdateGameData finished with modified count: $modifiedCount")
-          modifiedCount
-        }.recover {
-          case ex =>
-            println(s"❌ UpdateGameData outer failure: ${ex.getMessage}")
-            0
-        }
+    val source = Source.single(data)
 
-      case None =>
-        println(s"🆕 No existing game data found for name ${data.name}, inserting new game")
-        insert(data, nickname)
-    }.recoverWith {
-      case ex =>
-        println(s"❌ Find failed with error: ${ex.getMessage}, do nothing")
-        Future.successful(0)
-    }
+    val processingFlow: Flow[GameData, Int, NotUsed] =
+      Flow[GameData].mapAsync(1) { gameData =>
+        findGameDataByNickname(gameData.name).flatMap {
+          case Some(existingGame) =>
+            println(s"✅ Found game data for name ${gameData.name} with id ${existingGame.id}")
+            updateGameData(existingGame.id, gameData).map { modifiedCount =>
+              println(s"🔁 UpdateGameData finished with modified count: $modifiedCount")
+              modifiedCount
+            }.recover {
+              case ex =>
+                println(s"❌ UpdateGameData outer failure: ${ex.getMessage}")
+                0
+            }
+
+          case None =>
+            println(s"🆕 No existing game data found for name ${gameData.name}, inserting new game")
+            insert(gameData, nickname)
+        }
+      }.recover {
+        case ex =>
+          println(s"❌ Find failed with error: ${ex.getMessage}, do nothing")
+          0
+      }
+
+    source.via(processingFlow).runWith(Sink.head)
   }
+
 
   private val collection: MongoCollection[Document] = client.getDatabase("gamedb").getCollection("game_data")
   private val collectionEntries: MongoCollection[Document] = client.getDatabase("gamedb").getCollection("game_entry")

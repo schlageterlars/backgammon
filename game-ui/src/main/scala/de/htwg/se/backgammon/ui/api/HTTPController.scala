@@ -80,9 +80,9 @@ case class HTTPController(
     load().onComplete {
     case Success(Success(gameData)) =>
       println(s"Game data loaded: $gameData") 
-      val jsonString = Json.stringify(Json.toJson(gameData)) // Convert GameData to JSON string
-      val entity = HttpEntity(ContentTypes.`application/json`, jsonString) // Create the HTTP entity
-      val request = HttpRequest(HttpMethods.POST, uri = s"$baseUrl/init", entity = entity) // Build the request
+      val jsonString = Json.stringify(Json.toJson(gameData))
+      val entity = HttpEntity(ContentTypes.`application/json`, jsonString)
+      val request = HttpRequest(HttpMethods.POST, uri = s"$baseUrl/init", entity = entity) 
       Http().singleRequest(request) // Send it
     case Success(Failure(exception)) =>
       println(s"Game data loading failed: ${exception.getMessage}")
@@ -111,6 +111,8 @@ case class HTTPController(
   }
 
   def save(): Unit = {
+    return // to use kafka 
+
     val name = this.name.getOrElse(return)
     val game = this.game
     val data = GameData(id = 0, name, game.fields, game.barWhite, game.barBlack, this.data.player, Instant.now.getEpochSecond)

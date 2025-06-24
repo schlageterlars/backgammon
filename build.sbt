@@ -72,9 +72,11 @@ lazy val gameEngine = project
   .settings(
     name := "engine",
     libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
-      "com.typesafe.akka" %% "akka-stream"      % akkaVersion,
-      "com.typesafe.akka" %% "akka-http"        % akkaHttpVersion, 
+      "com.typesafe.akka" %% "akka-actor-typed"   % akkaVersion,
+      "com.typesafe.akka" %% "akka-stream"        % akkaVersion,
+      "com.typesafe.akka" %% "akka-http"          % akkaHttpVersion, 
+      "org.apache.kafka"  %  "kafka-clients"      %   "3.7.0",
+      "com.typesafe.akka" %% "akka-stream-kafka"  %   "4.0.2"
     )
   )
 
@@ -105,7 +107,9 @@ lazy val gameStorage = project
       "com.typesafe.play" %% "play-json"        %   playJsonVersion,
       "com.typesafe.akka" %% "akka-actor-typed" %   akkaVersion,
       "com.typesafe.akka" %% "akka-stream"      %   akkaVersion,
-      "com.typesafe.akka" %% "akka-http"        %   akkaHttpVersion
+      "com.typesafe.akka" %% "akka-http"        %   akkaHttpVersion,
+      "org.apache.kafka"  %  "kafka-clients"      %   "3.7.0",
+      "com.typesafe.akka" %% "akka-stream-kafka"  %   "4.0.2"
     )
   )
 
@@ -125,3 +129,17 @@ lazy val metric = project
       "io.gatling"            % "gatling-test-framework"    % "3.13.5" % Test
     )
   )
+
+  lazy val eventRelay = project
+    .in(file("event-relay"))
+    .settings(
+      name := "event-relay",
+      libraryDependencies ++= Seq(
+        "com.typesafe.play" %% "play-json"          %   playJsonVersion,
+        "com.typesafe.akka" %% "akka-actor-typed"   %   akkaVersion,
+        "com.typesafe.akka" %% "akka-stream"        %   akkaVersion,
+        "com.typesafe.akka" %% "akka-http"          %   akkaHttpVersion,
+        "org.apache.kafka"  % "kafka-clients"       %   "3.7.0",
+        "com.typesafe.akka" %% "akka-stream-kafka"  %   "4.0.2"
+      )
+    )

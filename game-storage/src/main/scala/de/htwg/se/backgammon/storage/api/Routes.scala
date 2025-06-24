@@ -48,9 +48,21 @@ class Routes(database: GameDataDAO):
     )
   }
 
+  private def handleNickname: Route = get {
+    path ("setName") {
+      parameter("name") { name =>
+        println(s"Set nickname to: $name")
+        database.setNickname(name)
+        complete(StatusCodes.OK)
+      }
+    }
+  }
+
   private def handleGameDataRequests: Route = get {
     path("load") {
       parameter("name") { name =>
+        println(s"Set nickname to: $name")
+        database.setNickname(name)
         onComplete(database.findGameDataByNickname(name)) {
           case Success(Some(gameData)) =>
             println(s"Game data found: $gameData")
@@ -65,35 +77,6 @@ class Routes(database: GameDataDAO):
       }
     }
   }
-/*
-  private def handleGameDataRequests: Route = get {
-    path("load") {
-      entity(as[String]) { name =>  
-        implicit val executionContext: ExecutionContext = system.dispatcher
-        database.findGameDataByNickname("name").onComplete {
-          case Success(Some(gameData)) =>
-            println(s"Game data found: $gameData")
-            complete(gameData)
-          case Success(None) =>
-            println("No game data found for this nickname.")
-          case Failure(ex) =>
-            println(s"An error occurred: ${ex.getMessage}")
-        }
-
-        val storage = JsonStorage()
-        val model = storage.load[IModel](Some("data")) match {
-        case Success(obj: Model) => obj
-        case _ => None
-        } 
-        model match {
-        case model: Model => complete(model)
-        case _ =>            complete(StatusCodes.InternalServerError, s"Failed to load model")
-
-        }
-      }
-    }
-  }
-*/
   private def handleSaveRequests: Route = post {
     path("publish") {
       entity(as[GameData]) { data =>

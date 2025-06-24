@@ -30,7 +30,7 @@ import de.htwg.se.backgammon.core.base.Model
 import de.htwg.se.backgammon.core.base.Game
 import de.htwg.se.backgammon.core._
 
-case class Controller(private var model: IModel) extends IController {
+class Controller(private var model: IModel) extends IController {
   def game = model.game
   def previousGame = model.previousGame
   def currentPlayer = model.player
