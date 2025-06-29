@@ -13,5 +13,5 @@ trait GameDataDAO {
   def save(gameData: GameData, nickname: String): Future[Int]
 
 
-  def name: Sstring
+  def name: String
 }
