@@ -14,11 +14,11 @@ object PrettyPrint {
   }
 
   def printNew(string: String | IGame) = {
-    clean; out(s"${string}\n")
+    clean(); out(s"${string}\n")
   }
 
   def printGameWithIndizies(game: IGame) = {
-    clean
+    clean()
     out(
       s"${game.barWhite} : " + underline(
         game.fields.mkString(" ")
@@ -43,7 +43,7 @@ object PrettyPrint {
       |   (_)`\___/'`\___/'   `\___/'`\____)   `\___x___/'`\___/'(_) (_)   
       |                                                                    
       |""".stripMargin
-    clean
+    clean()
     out(s"${victoryMessage}\nCongratulation to ${s"${player}".bold}!!")
   }
 

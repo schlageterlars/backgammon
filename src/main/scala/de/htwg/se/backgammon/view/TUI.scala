@@ -58,9 +58,9 @@ class TUI(controller: IController, out: String => Unit = (msg: String) => printl
   def execute(input: Option[Input]): Unit = 
     input match 
       case None if controller.checkersInBar =>
-        printErr(s"Use: <steps from ${playerColor.bold} bar>")
+        printErr(s"Use: {steps from ${playerColor.bold} bar}")
       case None =>
-        printErr(s"Use: <field with ${playerColor.bold} checkers>")
+        printErr(s"Use: {field with ${playerColor.bold} checkers}")
       case Some(move: Move) => controller.doAndPublish(controller.put, move)
       case Some(_: Redo)    => controller.doAndPublish(controller.redo)
       case Some(_: Undo)    => controller.undoAndPublish(controller.undo)
