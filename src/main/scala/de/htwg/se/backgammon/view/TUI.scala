@@ -51,7 +51,12 @@ class TUI(controller: IController, out: String => Unit = (msg: String) => printl
       case Event.GameOver => printGameOver(controller.game.winner.get)
 
   def inputLoop(): Unit =
-    analyseInput(readLine) match
+    execute(analyseInput(readLine))
+    
+    if continue then inputLoop()
+
+  def execute(input: Option[Input]): Unit = 
+    input match 
       case None if controller.checkersInBar =>
         printErr(s"Use: <steps from ${playerColor.bold} bar>")
       case None =>
@@ -61,8 +66,6 @@ class TUI(controller: IController, out: String => Unit = (msg: String) => printl
       case Some(_: Undo)    => controller.undoAndPublish(controller.undo)
       case Some(_: Skip)    => controller.skip(controller.die)
       case Some(_)          => controller.quit
-
-    if continue then inputLoop()
 
   def analyseInput(input: String): Option[Input] =
     input match

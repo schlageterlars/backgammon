@@ -6,7 +6,9 @@ import de.htwg.se.backgammon.model.IGame
 object PrettyPrint {
   var out: String => Unit = (msg: String) => println(msg)
 
-  private def clean = {
+  var underline: String => String = (string: String) => s"\u001B[4m${string}\u001B[0m"
+  var bold: String => String = (string: String) => s"\u001B[1m${string}\u001B[0m"
+  var clean: () => Unit = () => {
     print("\u001b[2J")
     print("\u001b[H")
   }
@@ -85,8 +87,4 @@ object PrettyPrint {
   implicit class PrintBold(original: String) {
     def bold = PrettyPrint.bold(original)
   }
-
-  private def underline(string: String) = s"\u001B[4m${string}\u001b[0m"
-
-  private def bold(string: String) = s"\u001B[1m${string}\u001b[0m"
 }
