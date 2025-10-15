@@ -4,23 +4,25 @@ import de.htwg.se.backgammon.model.Player
 import de.htwg.se.backgammon.model.IGame
 
 object PrettyPrint {
+  var out: String => Unit = (msg: String) => println(msg)
+
   private def clean = {
     print("\u001b[2J")
     print("\u001b[H")
   }
 
   def printNew(string: String | IGame) = {
-    clean; println(s"${string}\n")
+    clean; out(s"${string}\n")
   }
 
   def printGameWithIndizies(game: IGame) = {
     clean
-    println(
+    out(
       s"${game.barWhite} : " + underline(
         game.fields.mkString(" ")
       ) + s" : ${game.barBlack}"
     )
-    println(
+    out(
       " " * 3 + game.fields.zipWithIndex
         .map { case (v, i) =>
           s" ${if (i <= 10) " " else ""}${if (v.pieces >= 0) s"$i " else s" $i "}"
@@ -40,7 +42,7 @@ object PrettyPrint {
       |                                                                    
       |""".stripMargin
     clean
-    println(s"${victoryMessage}\nCongratulation to ${s"${player}".bold}!!")
+    out(s"${victoryMessage}\nCongratulation to ${s"${player}".bold}!!")
   }
 
   implicit class MarkDifferencesBetweenGames(original: IGame) {

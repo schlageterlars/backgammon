@@ -20,7 +20,7 @@ import de.htwg.se.backgammon.model.base.BearOffMove
 import de.htwg.se.backgammon.model.Skip
 import de.htwg.se.backgammon.util.PrettyPrint.printGameOver
 
-class TUI(controller: IController) extends Observer:
+class TUI(controller: IController, out: String => Unit = (msg: String) => println(msg)) extends Observer:
   controller.add(this)
   var continue = true
   def run =
@@ -35,17 +35,17 @@ class TUI(controller: IController) extends Observer:
       case Event.InvalidMove =>
         printErr(s"Not possible! ${ex.getOrElse(MoveException()).getMessage()}")
       case Event.PlayerChanged =>
-        println(s"${s"${controller.currentPlayer}".bold} it's your turn!")
+        out(s"${s"${controller.currentPlayer}".bold} it's your turn!")
       case Event.DiceRolled =>
-        println(
+        out(
           s"You rolled the dice twice: ${controller.dice.toPrettyString}"
         )
       case Event.BarIsNotEmpty =>
-        println(
+        out(
           "It is at least one checker in your bar, which die do you wanna use?"
         )
       case Event.AllCheckersInTheHomeBoard =>
-        println(
+        out(
           "All of your checkers are on your homeboard, so you can bear off."
         )
       case Event.GameOver => printGameOver(controller.game.winner.get)
@@ -88,7 +88,7 @@ class TUI(controller: IController) extends Observer:
   def playerColor = (controller.currentPlayer.toLowerCase)
 
   def printErr(error: String) =
-    printGameWithIndizies(controller.game); println(error)
+    printGameWithIndizies(controller.game); out(error)
 
   def readLine: String =
     printInputFormat; scala.io.StdIn.readLine
