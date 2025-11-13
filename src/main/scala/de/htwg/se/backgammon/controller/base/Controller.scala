@@ -15,6 +15,8 @@ import de.htwg.se.backgammon.exception.FieldDoesNotExistException
 import de.htwg.se.backgammon.model.base.MOVES_PER_ROUND
 import de.htwg.se.backgammon.model.IGame
 import de.htwg.se.backgammon.model.base.Dice
+import de.htwg.se.backgammon.model.base.Model
+
 
 import scala.util.Try
 import scala.util.Failure
@@ -45,6 +47,10 @@ case class Controller(private val model: IModel) extends IController {
         case Failure(exception) =>
           notifyObservers(Event.InvalidMove, Some(exception))
       }
+  }
+
+  def init(game: IGame): Unit = {
+    this.game = game
   }
 
   def doAndPublish(doThis: IMove => Try[IGame]): Unit =
