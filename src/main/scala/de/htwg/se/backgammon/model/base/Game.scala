@@ -15,11 +15,6 @@ import de.htwg.se.backgammon.model.strategy.ValidateBearInMoveStrategy
 import de.htwg.se.backgammon.model.strategy.DefaultValidateMoveStrategy
 import de.htwg.se.backgammon.model.strategy.MoveStrategy
 import scala.xml.Elem
-import play.api.libs.json.JsValue
-import play.api.libs.json.Reads
-import play.api.libs.json.Json
-import play.api.libs.json.Writes
-import de.htwg.se.backgammon.model.storage.Storable
 import scala.xml.Node
 
 case class Game(fields: List[IField], barWhite: Int = 0, barBlack: Int = 0)
@@ -90,18 +85,6 @@ object Game {
       (xml \ "fields" \ "field").map(node => Field(node.text.toInt)).toList
 
     new Game(fields, barWhite, barBlack)
-  }
-
-  implicit val gameReads: Reads[Game] = Json.reads[Game]
-  implicit val gameWrites: Writes[Game] = Json.writes[Game]
-
-  def fromJson(json: JsValue) = {
-    json.asOpt[Game] match
-      case Some(game: Game) => game
-      case _ =>
-        throw new IllegalArgumentException(
-          s"Json can't be converted to a game!"
-        )
   }
 }
 

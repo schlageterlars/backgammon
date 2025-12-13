@@ -1,9 +1,8 @@
 package de.htwg.se.backgammon.model
 
 import scala.xml.Elem
-import de.htwg.se.backgammon.model.storage.Storable
 
-trait IModel extends Storable {
+trait IModel {
 
   def next: Player
 
@@ -22,15 +21,4 @@ trait IModel extends Storable {
   def previousGame: IGame
 
   def player: Player
-
-  override def asXml: Elem = {
-    <data> 
-        <current>{player}</current>
-        <dice>
-            {dice.map(value => <die>{value}</die>)}
-        </dice>
-        <doublets>{doublets}</doublets>
-        {game.asXml}
-    </data>
-  }
 }

@@ -1,12 +1,6 @@
 package de.htwg.se.backgammon.model
 
-import play.api.libs.json.Reads
-import play.api.libs.json.JsValue
-import play.api.libs.json.JsResult
 import de.htwg.se.backgammon.model.base.Field
-import play.api.libs.json.Writes
-import play.api.libs.json.Json
-import play.api.libs.json.JsNumber
 
 trait IField {
 
@@ -34,11 +28,4 @@ trait IField {
 
   def pieces: Int
 
-}
-
-object IField {
-  implicit val iFieldReads: Reads[IField] = (json: JsValue) =>
-    json.validate[Int].map(pieces => Field(pieces))
-
-  implicit val iFieldWrites: Writes[IField] = Writes(obj => JsNumber(obj.pieces))
 }
