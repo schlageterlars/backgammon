@@ -15,6 +15,8 @@ import de.htwg.se.backgammon.exception.FieldDoesNotExistException
 import de.htwg.se.backgammon.model.base.MOVES_PER_ROUND
 import de.htwg.se.backgammon.model.IGame
 import de.htwg.se.backgammon.model.base.Dice
+import de.htwg.se.backgammon.model.base.Model
+
 
 import scala.util.Try
 import scala.util.Failure
@@ -47,6 +49,10 @@ case class Controller(private val model: IModel) extends IController {
       }
   }
 
+  def init(game: IGame): Unit = {
+    this.game = game
+  }
+
   def doAndPublish(doThis: IMove => Try[IGame]): Unit =
     manager.stackCommand match {
       case Some(command: PutCommand) => doAndPublish(doThis, command.move)
@@ -72,7 +78,7 @@ case class Controller(private val model: IModel) extends IController {
     this used steps
     this.game = game
     if (model.dice.isEmpty) {
-      if !model.doublets then nextTurn()
+      nextTurn()
       roll()
     }
     if (game.winner.isDefined) then notifyObservers(Event.GameOver)

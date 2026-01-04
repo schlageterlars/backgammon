@@ -6,8 +6,6 @@ trait IModel {
 
   def next: Player
 
-  def doublets: Boolean
-
   var dice: List[Int]
 
   def roll: List[Int]

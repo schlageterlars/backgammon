@@ -13,8 +13,7 @@ case class Model(
     private var _game: IGame,
     var player: Player,
     val diceStrategy: IDice = new Dice(),
-    var dice: List[Int] = List(),
-    var doublets: Boolean = false
+    var dice: List[Int] = List()
 ) extends IModel {
   def this(game: Game, diceStrategy: IDice) =
     this(game, Player.White, diceStrategy)
@@ -29,11 +28,13 @@ case class Model(
 
   def roll = {
     dice = diceStrategy.roll(MOVES_PER_ROUND)
-    doublets = dice match {
-      case Nil                       => false
-      case dice if dice.length < 2 => false
-      case x :: xs                   => xs.forall(_ == x)
+    val doublets: Boolean = dice match {
+      case List(a, b) => a == b
+      case _ => false
     }
+    if doublets then
+      dice = List.fill(4)(dice.head)
+      
     dice
   }
 

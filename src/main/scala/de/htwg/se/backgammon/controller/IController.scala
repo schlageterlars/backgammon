@@ -21,6 +21,7 @@ trait IController extends Observable {
   def doAndPublish(doThis: IMove => Try[IGame]): Unit
   def undoAndPublish(doThis: => Option[GameState]): Unit
   def skip(steps: Int): IGame
+  def init(game: IGame): Unit
   def put(move: IMove): Try[IGame]
   def redo(move: IMove): Try[IGame]
   def undo: Option[GameState]
